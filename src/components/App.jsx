@@ -13,19 +13,19 @@ import SafeClosedScreen from './SafeClosedScreen.jsx';
 import SafeOpenScreen from './SafeOpenScreen.jsx';
 let escapp;
 
-import { SCREENS, PAINTING_SCREEN, SAFE_CLOSED_SCREEN, KEYPAD_SCREEN, SAFE_OPEN_SCREEN } from '../constants/constants.jsx';
+import { PAINTING_SCREEN, SAFE_CLOSED_SCREEN, KEYPAD_SCREEN, SAFE_OPEN_SCREEN } from '../constants/constants.jsx';
 
 
 export default function App() {
   const [loading, setLoading] = useState(true);
   const [screen, setScreen] = useState(PAINTING_SCREEN);
   const [prevScreen, setPrevScreen] = useState(PAINTING_SCREEN);
-  //para recordar qué puzzle es este, por si se restaura el estado de escapp, saber si se ha superado este o no
-  const [puzzle, setPuzzle] = useState(0);
+  const [solution, setSolution] = useState("");
+  
 
   useEffect(() => {
     console.log("useEffect, lets load everything");
-    //localStorage.clear();
+    //localStorage.clear();  //For development, clear local storage (comentar y descomentar para desarrollo)
     I18n.init(GLOBAL_CONFIG);
     LocalStorage.init(GLOBAL_CONFIG.localStorageKey);
     GLOBAL_CONFIG.escapp.onNewErStateCallback = (er_state) => {
@@ -58,6 +58,7 @@ export default function App() {
     }
   }, []);  
 
+
   useEffect(() => {
     console.log("useEffect, screen changed");
     if (prevScreen === KEYPAD_SCREEN && screen === SAFE_CLOSED_SCREEN) {
@@ -70,7 +71,7 @@ export default function App() {
 
 
   function solvePuzzle(){
-    const solution = LocalStorage.getSetting("safebox_password");
+    //XXX DUDA: a este método solo se le llama cuando sale el boton continue, que es cuando se han resuelto todos los puzzles
     console.log("Solving puzzle", solution);
 
     escapp.submitPuzzle(GLOBAL_CONFIG.escapp.puzzleId, solution, {}, (success) => {
@@ -88,65 +89,56 @@ export default function App() {
   function restoreState(er_state){
     console.log("Restoring state", er_state);
     if((typeof er_state !== "undefined") && (er_state.puzzlesSolved.length > 0)){
-      let lastPuzzleSolved = Math.max.apply(null, er_state.puzzlesSolved);
-      if (er_state.puzzlesSolved.length == 7 && screen == PAINTING_SCREEN) {
-        setLoading(false);
-        setPuzzle(lastPuzzleSolved);
+      let lastPuzzleSolved = Math.max.apply(null, er_state.puzzlesSolved);      
+      if (lastPuzzleSolved >= GLOBAL_CONFIG.escapp.puzzleId) {
+        //puzzle superado, abrimos la caja fuerte        
         setScreen(SAFE_OPEN_SCREEN);
-        setPrevScreen(PAINTING_SCREEN);
+        setPrevScreen(PAINTING_SCREEN);        
       } else {
-        if (screen == PAINTING_SCREEN) {
-          setLoading(false);
-          setPuzzle(lastPuzzleSolved);
-          setScreen(SAFE_OPEN_SCREEN);
-          setPrevScreen(PAINTING_SCREEN);
-        } else {
-          forceUpdate();
+        //puzzle no superado, miramos en localStorage en qué pantalla estábamos
+        let localstateToRestore = LocalStorage.getSetting("app_state");
+        console.log("Restoring screen from local state", localstateToRestore);
+        if(localstateToRestore){      
+          setScreen(localstateToRestore.screen);
+          setPrevScreen(localstateToRestore.prevScreen);
         }
       }
-    } else {
       setLoading(false);
+    } else {
       restoreLocalState();
     }
   }
 
   function saveState(){
     console.log("Saving state to local storage");
-    let currentState = {screen: screen, puzzle: puzzle, prevScreen: prevScreen};
+    let currentState = {screen: screen, prevScreen: prevScreen};
     LocalStorage.saveSetting("app_state", currentState);
   }
 
   function restoreLocalState(){
     let stateToRestore = LocalStorage.getSetting("app_state");
     console.log("Restoring local state", stateToRestore);
-    if(stateToRestore){
-      setLoading(false);
+    if(stateToRestore){      
       setScreen(stateToRestore.screen);
       setPrevScreen(stateToRestore.prevScreen);
-      setPuzzle(stateToRestore.puzzle);
+      setLoading(false);
     }
   }
 
-  function onBoxOpen(solution){
-    console.log("Box open", solution);
+  function onTryBoxOpen(sol){
+    console.log("onTryBoxopen with solution:", sol);
     if(typeof solution !== "string"){
       return;
     }
-    escapp.checkPuzzle(GLOBAL_CONFIG.escapp.puzzleId, solution, {}, (success, er_state) => {
+    setSolution(sol);
+    escapp.checkPuzzle(GLOBAL_CONFIG.escapp.puzzleId, sol, {}, (success, er_state) => {
       if(success){
-        onPuzzleCompleted(GLOBAL_CONFIG.escapp.puzzleId);
-        LocalStorage.saveSetting("safebox_password", solution);
+        onOpenScreen(SAFE_OPEN_SCREEN);    
       }
+      return success;
     });
   }
 
-  function onPuzzleCompleted(puzzle_id){
-    console.log("Puzzle completed", puzzle_id);
-    setPuzzle(puzzle_id);    
-    setScreen(SAFE_OPEN_SCREEN);
-    setPrevScreen(KEYPAD_SCREEN);
-    saveState();
-  }
 
   function onOpenScreen(newscreen_name){
     console.log("Opening screen", newscreen_name);
@@ -180,19 +172,27 @@ export default function App() {
   if(loading){
       return "Loading...";
   }
+  /*
+  //COMENTADO PORQUE NO SE USA EN EL EJEMPLO, serviría para saber si se han superado todos los puzzles 
+  // y entonces se muestra un mensaje u otro en la pantalla final
+  //
   let puzzlesSolved = [];
   let solvedAllPuzzles = false;
   if(!escapp){
+    //si no esta definido escapp, es que estamos loading
     setLoading(true);
   } else {
     let newestState = escapp.getNewestState();
     puzzlesSolved = (newestState && newestState.puzzlesSolved) ? newestState.puzzlesSolved : [];
-    solvedAllPuzzles = true; //newestState.puzzlesSolved.length >= 7;
+    //en este ejemplo se han superado todos los puzzles si se han superado 3 que es el total de la ER
+    solvedAllPuzzles = newestState.puzzlesSolved.length >= 3;
   }
+  */
+  let solvedAllPuzzles = true;
   return (<div>
-    <PaintingScreen show={screen === "painting"} key="PaintingScreen" I18n={I18n} onOpenScreen={onOpenScreen} />
-    <SafeClosedScreen show={screen === "safe_closed"} key="SafeClosedScreen" I18n={I18n} onOpenScreen={onOpenScreen} />
-    <MainScreen show={screen === "keypad"} key="MainScreen" config={GLOBAL_CONFIG} I18n={I18n} escapp={escapp} onBoxOpen={onBoxOpen} />
-    <SafeOpenScreen show={screen === "safe_open"} key="SafeOpenScreen" I18n={I18n} solvedAllPuzzles={solvedAllPuzzles} solvePuzzle={solvePuzzle}/>
+    <PaintingScreen show={screen === PAINTING_SCREEN } I18n={I18n} onOpenScreen={onOpenScreen} />
+    <SafeClosedScreen show={screen === SAFE_CLOSED_SCREEN } I18n={I18n} onOpenScreen={onOpenScreen} />
+    <MainScreen show={screen === KEYPAD_SCREEN} escapp={escapp} config={GLOBAL_CONFIG} I18n={I18n} onTryBoxOpen={onTryBoxOpen} />
+    <SafeOpenScreen show={screen === SAFE_OPEN_SCREEN} I18n={I18n} solvedAllPuzzles={solvedAllPuzzles} solvePuzzle={solvePuzzle}/>
   </div>);
 }

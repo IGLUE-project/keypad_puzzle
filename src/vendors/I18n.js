@@ -1,4 +1,4 @@
-import * as Utils from '../vendors/Utils.js';
+import * as Utils from './Utils.js';
 import {LOCALES} from '../config/locales.js';
 
 let APP_LOCALES;

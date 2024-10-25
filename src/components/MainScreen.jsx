@@ -6,6 +6,7 @@ const MainScreen = (props) => {
   const [password, setPassword] = useState([]);
   const [processingClick, setProcessingClick] = useState(false);
   const [checking, setChecking] = useState(false);
+  const [light, setLight] = useState("off");
 
   const onClickButton = (value) => {
     console.log("onClickButton", value);
@@ -28,6 +29,7 @@ const MainScreen = (props) => {
         const solution = [...password, value].join("");
         setPassword([]);
         console.log("Checking solution", solution);
+        //check solution here, to see if change box light to green or red
         props.escapp.checkPuzzle(props.config.escapp.puzzleId, solution, {}, (success) => {
           changeBoxLight(success, solution);
         });
@@ -42,33 +44,27 @@ const MainScreen = (props) => {
   }
 
   const changeBoxLight = (success, solution) => {
-    let value;
     let audio;
 
     if (success) {
-      value = "green";
       audio = document.getElementById("audio_success");
+      setLight("green");
     } else {
-      value = "red";
       audio = document.getElementById("audio_failure");
+      setLight("red");
     }
 
     setTimeout(() => {
-      if (value === "red") {
-        $("div.boxlight_off").show();
-        $("div.boxlight_red").hide();
-      }
+      setLight("off");
       afterChangeBoxLight(success, solution);
     }, 1000);
 
-    $("div.boxlight_" + value).show();
-    $("div.boxlight_off").hide();
     audio.play();
   }
 
   const afterChangeBoxLight = (success, solution) => {
     if (success) {
-      return props.onBoxOpen(solution);
+      return props.onTryBoxOpen(solution);
     }
     setChecking(false);
   };
@@ -98,9 +94,9 @@ const MainScreen = (props) => {
             <BoxButton value={"0"} position={11} onClick={onClickButton} />
             <BoxButton value={"#"} position={12} onClick={onClickButton} />
           </div>
-          <div className="boxlight boxlight_off"></div>
-          <div className="boxlight boxlight_red"></div>
-          <div className="boxlight boxlight_green"></div>
+          <div className="boxlight boxlight_off" style={{ display: light === "off" ? "block" : "none" }} ></div>
+          <div className="boxlight boxlight_red" style={{ display: light === "red" ? "block" : "none" }} ></div>
+          <div className="boxlight boxlight_green" style={{ display: light === "green" ? "block" : "none" }} ></div>
         </div>) : null}
     </div>);
 };
