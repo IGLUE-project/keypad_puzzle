@@ -1,5 +1,5 @@
 import React from 'react';
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import './../assets/scss/app.scss';
 import './../assets/scss/modal.scss';
 
@@ -21,6 +21,9 @@ export default function App() {
   const [screen, setScreen] = useState(PAINTING_SCREEN);
   const [prevScreen, setPrevScreen] = useState(PAINTING_SCREEN);
   const [solution, setSolution] = useState("");
+  const divparent = useRef(null);
+  const [appwidth, setAppwidth] = useState(0)
+  const [appheight, setAppheight] = useState(0)
   
 
   useEffect(() => {
@@ -73,6 +76,9 @@ export default function App() {
   function solvePuzzle(){
     //XXX DUDA: a este método solo se le llama cuando sale el boton continue, que es cuando se han resuelto todos los puzzles
     console.log("Solving puzzle", solution);
+
+    //XXX DUDA: en el de MalditaER se guarda en localstorage con la clave "safebox_password", quizá sirva por si se vuelve a recargar o se vuelve a la app, que el estado se pierde.
+    //lo mejor seria guardar en localstorage todo el estado de la app cuando algo cambia y asi al volver a cargar la app se restaura el estado en el useEffect
 
     escapp.submitPuzzle(GLOBAL_CONFIG.escapp.puzzleId, solution, {}, (success) => {
       if(!success){
@@ -148,24 +154,12 @@ export default function App() {
   }
 
   function handleResize(){
-    let contentHeight = $("#root").height();
-    let contentWidth = $("#root").width();
-    let aspectRatio = 4 / 3;
-    let boxWidth = Math.min(contentHeight * aspectRatio, contentWidth);
-    let boxHeight = boxWidth / aspectRatio;
+    let divparentwidth = divparent.current ? divparent.current.offsetWidth:0;
+    let divparentheight = divparent.current ? divparent.current.offsetHeight:0;
+    console.log("Div parent size", divparentwidth, divparentheight);
 
-    let buttonContainer = $("div#container");
-    $(buttonContainer).width(boxWidth * 0.22);
-    $(buttonContainer).css("margin-left", boxWidth / 2 * 0.09);
-    // $(buttonContainer).css("margin-top",boxHeight*0.3 + (contentHeight-boxHeight)/2);
-    $(buttonContainer).height(boxHeight * 0.4);
-
-    $("div.boxButton").width(boxWidth * 0.06);
-    $("div.boxButton").height(boxHeight * 0.1);
-
-    let boxLight = $("div.boxlight");
-    $(boxLight).css('left', $("#root").width() / 2 + boxWidth / 2 * 0.3);
-    $(boxLight).css('top', $("#root").height() / 2 - boxHeight / 2 * 0.4);
+    setAppwidth(divparentwidth);
+    setAppheight(divparentheight);
   }
 
   
@@ -189,10 +183,10 @@ export default function App() {
   }
   */
   let solvedAllPuzzles = true;
-  return (<div>
+  return (<div id="firstnode" ref={divparent}>
     <PaintingScreen show={screen === PAINTING_SCREEN } I18n={I18n} onOpenScreen={onOpenScreen} />
     <SafeClosedScreen show={screen === SAFE_CLOSED_SCREEN } I18n={I18n} onOpenScreen={onOpenScreen} />
-    <MainScreen show={screen === KEYPAD_SCREEN} escapp={escapp} config={GLOBAL_CONFIG} I18n={I18n} onTryBoxOpen={onTryBoxOpen} />
+    <MainScreen show={screen === KEYPAD_SCREEN} escapp={escapp} config={GLOBAL_CONFIG} I18n={I18n} onTryBoxOpen={onTryBoxOpen} appheight={appheight} appwidth={appwidth} />
     <SafeOpenScreen show={screen === SAFE_OPEN_SCREEN} I18n={I18n} solvedAllPuzzles={solvedAllPuzzles} solvePuzzle={solvePuzzle}/>
   </div>);
 }
