@@ -9,13 +9,13 @@ div#screen_main {
 	justify-content: center;
 }
 
-div#container {
+div#keypad_container {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
 }
 
-div#container div.row {
+div#keypad_container div.row {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
@@ -23,7 +23,7 @@ div#container div.row {
 }
 
 div.boxButton {
-	background-image: url("../images/background_number.jpg");
+	background-image: url("../images/background_key.jpg");
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: contain;
@@ -54,7 +54,7 @@ div.boxButton li {
     cursor: pointer; 
 }
 
-div.boxlight {
+div.boxLight {
 	position: absolute;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -67,14 +67,14 @@ div.boxlight {
 	border-image: none;
 }
 
-div.boxlight.boxlight_off {
+div.boxLight.boxLight_off {
 	background-image: url("../images/light_off.png");
 }
 
-div.boxlight.boxlight_red {
+div.boxLight.boxLight_red {
 	background-image: url("../images/light_red.png");
 }
 
-div.boxlight.boxlight_green {
+div.boxLight.boxLight_green {
 	background-image: url("../images/light_green.png");
 }

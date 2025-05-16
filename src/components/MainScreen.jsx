@@ -7,8 +7,13 @@ const MainScreen = (props) => {
   const [processingClick, setProcessingClick] = useState(false);
   const [checking, setChecking] = useState(false);
   const [light, setLight] = useState("off");
+  const [containerWidth, setContainerWidth] = useState(0);
+  const [containerHeight, setContainerHeight] = useState(0);
+  const [containerMarginLeft, setContainerMarginLeft] = useState(0);
   const [boxWidth, setBoxWidth] = useState(0);
   const [boxHeight, setBoxHeight] = useState(0);
+  const [lightLeft, setLightLeft] = useState(0);
+  const [lightTop, setLightTop] = useState(0);
 
   const onClickButton = (value) => {
     console.log("onClickButton", value);
@@ -33,7 +38,7 @@ const MainScreen = (props) => {
         console.log("Checking solution", solution);
         //check solution here, to see if change box light to green or red
         props.escapp.checkPuzzle(props.config.escapp.puzzleId, solution, {}, (success) => {
-          changeBoxLight(success, solution);
+          changeboxLight(success, solution);
         });
       } else {
         setProcessingClick(false);
@@ -58,19 +63,42 @@ const MainScreen = (props) => {
 
     setTimeout(() => {
       setLight("off");
-      afterChangeBoxLight(success, solution);
+      afterChangeboxLight(success, solution);
     }, 1000);
 
     audio.play();
   }
 
-  useEffect(() => {
+  function handleResize(){
     let aspectRatio = 4 / 3;
-    setBoxWidth(Math.min(props.appheight * aspectRatio, props.appwidth));
-    setBoxHeight(boxWidth / aspectRatio);
-    console.log("props.appwidth", props.appwidth, "props.appheight", props.appheight);
-    console.log("Box size", Math.min(props.appheight * aspectRatio, props.appwidth), Math.min(props.appheight * aspectRatio, props.appwidth) / aspectRatio);
-  }, [props.appwidth, props.appheight, props.show]);
+    let _keypadWidth = Math.min(props.appHeight * aspectRatio, props.appWidth);
+    let _keypadHeight = _keypadWidth / aspectRatio;
+
+    let _containerWidth = _keypadWidth * 0.22;
+    let _containerHeight = _keypadHeight * 0.4;
+    let _containerMarginLeft = _keypadWidth * 0.045;
+
+    let _boxWidth = _keypadWidth * 0.06;
+    let _boxHeight = _keypadHeight * 0.1;
+
+    let _lightLeft = props.appWidth / 2 + _keypadWidth / 2 * 0.3;
+    let _lightTop = props.appHeight / 2 - _keypadHeight / 2 * 0.4;
+
+
+    setContainerWidth(_containerWidth);
+    setContainerHeight(_containerHeight);
+    setContainerMarginLeft(_containerMarginLeft);
+
+    setBoxWidth(_boxWidth);
+    setBoxHeight(_boxHeight);
+
+    setLightLeft(_lightLeft);
+    setLightTop(_lightTop);
+  }
+
+  useEffect(() => {
+    handleResize();
+  }, [props.appWidth, props.appHeight]);
 
   const afterChangeBoxLight = (success, solution) => {
     if (success) {
@@ -79,8 +107,8 @@ const MainScreen = (props) => {
     setChecking(false);
   };
 
-  return (<div id="screen_main" className={"screen_wrapper" + (props.show ? "" : " screen_hidden")}>
-      {props.show ? (<div id="container" style={{ width: boxWidth * 0.22, height: boxHeight * 0.4, marginLeft: boxWidth / 2 * 0.09 }}>
+  return (<div id="screen_main" className={"screen_wrapper"}>
+      <div id="keypad_container" style={{ width: containerWidth, height: containerHeight, marginLeft: containerMarginLeft }}>
           <audio id="audio_beep" src="sounds/beep-short.mp3" autostart="false" preload="auto" />
           <audio id="audio_failure" src="sounds/access-denied.mp3" autostart="false" preload="auto" />
           <audio id="audio_success" src="sounds/correct.mp3" autostart="false" preload="auto" />
@@ -104,10 +132,10 @@ const MainScreen = (props) => {
             <BoxButton value={"0"} position={11} onClick={onClickButton} boxHeight={boxHeight} boxWidth={boxWidth} />
             <BoxButton value={"#"} position={12} onClick={onClickButton} boxHeight={boxHeight} boxWidth={boxWidth} />
           </div>
-          <div className="boxlight boxlight_off" style={{ display: light === "off" ? "block" : "none", left: props.appwidth / 2 + boxWidth / 2 * 0.3, top: props.appheight / 2 - boxHeight / 2 * 0.4 }} ></div> 
-          <div className="boxlight boxlight_red" style={{ display: light === "red" ? "block" : "none", left: props.appwidth / 2 + boxWidth / 2 * 0.3, top: props.appheight / 2 - boxHeight / 2 * 0.4 }} ></div> 
-          <div className="boxlight boxlight_green" style={{ display: light === "green" ? "block" : "none", left: props.appwidth / 2 + boxWidth / 2 * 0.3, top: props.appheight / 2 - boxHeight / 2 * 0.4 }} ></div> 
-        </div>) : null}
+          <div className="boxLight boxLight_off" style={{ display: light === "off" ? "block" : "none", left: lightLeft, top: lightTop }} ></div> 
+          <div className="boxLight boxLight_red" style={{ display: light === "red" ? "block" : "none", left: lightLeft, top: lightTop }} ></div> 
+          <div className="boxLight boxLight_green" style={{ display: light === "green" ? "block" : "none", left: lightLeft, top: lightTop }} ></div> 
+        </div>
     </div>);
 };
 

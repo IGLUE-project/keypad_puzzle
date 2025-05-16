@@ -1,5 +1,2 @@
-
-export const PAINTING_SCREEN = "painting";
-export const SAFE_CLOSED_SCREEN = "safe_closed";
-export const KEYPAD_SCREEN = "keypad";
-export const SAFE_OPEN_SCREEN = "safe_open";
+export const MAIN_SCREEN = "MAIN_SCREEN";
+export const SUCCESS_SCREEN = "SUCCESS_SCREEN";
