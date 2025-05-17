@@ -1,14 +1,15 @@
 import React from 'react';
-import {useState, useEffect, useLayoutEffect, useRef} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import './../assets/scss/app.scss';
 
-import {GLOBAL_CONFIG} from '../config/config.js';
+import { ESCAPP_CLIENT_SETTINGS, MAIN_SCREEN, SUCCESS_SCREEN } from '../constants/constants.jsx';
 import * as I18n from '../vendors/I18n.js';
 import * as LocalStorage from '../vendors/Storage.js';
-let escapp;
-
 import MainScreen from './MainScreen.jsx';
-import { MAIN_SCREEN, SUCCESS_SCREEN } from '../constants/constants.jsx';
+
+let escapp;
+let escappClientSettings;
+let reusablePuzzleSettings;
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -19,33 +20,41 @@ export default function App() {
   const [appHeight, setAppHeight] = useState(0);
   
   useEffect(() => {
-/*    //localStorage.clear();  //For development, clear local storage
-    I18n.init(GLOBAL_CONFIG);
-    LocalStorage.init(GLOBAL_CONFIG.localStorageKey);
-    GLOBAL_CONFIG.escapp.onNewErStateCallback = (er_state) => {
+    escapp = new ESCAPP(ESCAPP_CLIENT_SETTINGS);
+    escappClientSettings = escapp.getSettings();
+    reusablePuzzleSettings = escapp.getReusablePuzzleSettings();
+    console.log("Escapp client initiated with settings:",escappClientSettings);
+    console.log("reusablePuzzleSettings",reusablePuzzleSettings);
+
+    //escapp.displayCustomEscappDialog("Escapp client loaded","Escapp client loaded");
+    
+    //localStorage.clear();  //For development
+    //I18n.init(GLOBAL_CONFIG);
+    //LocalStorage.init(GLOBAL_CONFIG.localStorageKey);
+    
+    ESCAPP_CLIENT_SETTINGS.onNewErStateCallback = (er_state) => {
       console.log("New ER state received from ESCAPP", er_state);
-      restoreState(er_state);
+      //restoreState(er_state);
     }
-    GLOBAL_CONFIG.escapp.onErRestartCallback = (er_state) => {
+    ESCAPP_CLIENT_SETTINGS.onErRestartCallback = (er_state) => {
       // reset(); //For development
-      console.log("Escape Room Restart received from ESCAPP", er_state);
-      LocalStorage.removeSetting("app_state");
-      LocalStorage.removeSetting("played_door");
+      console.log("Escape Room restart received from ESCAPP", er_state);
+      //LocalStorage.removeSetting("app_state");
     };
-    escapp = new ESCAPP(GLOBAL_CONFIG.escapp);
     escapp.validate((success, er_state) => {
       console.log("ESCAPP validation", success, er_state);
       try { 
         if(success){
-          //ha ido bien, restauramos el estado recibido
-          restoreState(er_state);
+          //restoreState(er_state);
         }
       } catch(e){
         console.error(e);
       }
-    });*/
+    });
+
     window.addEventListener('resize', handleResize);
     setLoading(false);
+
     return () => {
       window.removeEventListener('resize', handleResize);
     }
@@ -155,7 +164,7 @@ export default function App() {
   switch(screen){
     case MAIN_SCREEN:
       return (<div id="wrapper" ref={wrapperDiv}>
-        <MainScreen escapp={escapp} config={GLOBAL_CONFIG} I18n={I18n} onTryBoxOpen={onTryBoxOpen} appHeight={appHeight} appWidth={appWidth} />
+        <MainScreen escapp={escapp} I18n={I18n} onTryBoxOpen={onTryBoxOpen} appHeight={appHeight} appWidth={appWidth} />
       </div>);
     case SUCCESS_SCREEN:
     default:
