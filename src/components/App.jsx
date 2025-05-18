@@ -2,14 +2,16 @@ import React from 'react';
 import {useState, useEffect, useRef} from 'react';
 import './../assets/scss/app.scss';
 
-import { ESCAPP_CLIENT_SETTINGS, MAIN_SCREEN, SUCCESS_SCREEN } from '../constants/constants.jsx';
+import * as Utils from '../vendors/Utils.js';
 import * as I18n from '../vendors/I18n.js';
-import * as LocalStorage from '../vendors/Storage.js';
+
+import { ESCAPP_CLIENT_SETTINGS, MAIN_SCREEN, SUCCESS_SCREEN } from '../constants/constants.jsx';
 import MainScreen from './MainScreen.jsx';
 
 let escapp;
 let escappClientSettings;
 let appSettings;
+let Storage;
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -20,35 +22,37 @@ export default function App() {
   const [appHeight, setAppHeight] = useState(0);
   
   useEffect(() => {
-    ESCAPP_CLIENT_SETTINGS.onNewErStateCallback = (er_state) => {
-      console.log("New ER state received from ESCAPP", er_state);
-      //restoreState(er_state);
+    //Specify callbacks for Escapp client
+    ESCAPP_CLIENT_SETTINGS.onNewErStateCallback = (erState) => {
+      Utils.log("New escape room state received from ESCAPP", erState);
+      //restoreState(erState);
     }
-    ESCAPP_CLIENT_SETTINGS.onErRestartCallback = (er_state) => {
-      // reset(); //For development
-      console.log("Escape Room restart received from ESCAPP", er_state);
-      //LocalStorage.removeSetting("app_state");
+    ESCAPP_CLIENT_SETTINGS.onErRestartCallback = (erState) => {
+      Utils.log("Escape Room has been restarted.", erState);
+      if(typeof Storage.removeSetting === "function"){
+        Storage.removeSetting("state");
+      }
     };
 
+    //Create the Escapp client instance.
     escapp = new ESCAPP(ESCAPP_CLIENT_SETTINGS);
     escappClientSettings = escapp.getSettings();
+    //Get app settings provided by the Escapp server.
     appSettings = escapp.getAppSettings();
-    console.log("Escapp client initiated with settings:",escappClientSettings);
-    console.log("appSettings",appSettings);
+    //Use the storage feature provided by Escapp client.
+    Storage = escapp.getStorage();
+    Utils.log("Escapp client initiated with settings:", escappClientSettings);
+    Utils.log("appSettings", appSettings);
 
-
-    //escapp.displayCustomEscappDialog("Escapp client loaded","Escapp client loaded");
+    //Init internacionalization module
+    I18n.init(appSettings);
     
-    //localStorage.clear();  //For development
-    //I18n.init(GLOBAL_CONFIG);
-    //LocalStorage.init(GLOBAL_CONFIG.localStorageKey);
-
-
-    escapp.validate((success, er_state) => {
-      console.log("ESCAPP validation", success, er_state);
+    //Validate user. To be valid, a user must be authenticated and a participant of the escape room.
+    escapp.validate((success, erState) => {
+      Utils.log("ESCAPP validation", success, erState);
       try { 
         if(success){
-          //restoreState(er_state);
+          //restoreState(erState);
         }
       } catch(e){
         console.error(e);
@@ -93,15 +97,12 @@ export default function App() {
     });
   }
 
-  function reset(){
-    escapp.reset();
-    localStorage.clear();
-  }*/
+  */
 
-/*  function restoreState(er_state){
-    console.log("Restoring state", er_state);
-    if((typeof er_state !== "undefined") && (er_state.puzzlesSolved.length > 0)){
-      let lastPuzzleSolved = Math.max.apply(null, er_state.puzzlesSolved);      
+/*  function restoreState(erState){
+    console.log("Restoring state", erState);
+    if((typeof erState !== "undefined") && (erState.puzzlesSolved.length > 0)){
+      let lastPuzzleSolved = Math.max.apply(null, erState.puzzlesSolved);      
       if (lastPuzzleSolved >= GLOBAL_CONFIG.escapp.puzzleId) {
         //puzzle superado, abrimos la caja fuerte     
         // setScreen(SAFE_OPEN_SCREEN);
@@ -143,7 +144,7 @@ export default function App() {
       return;
     }
     setSolution(sol);
-    escapp.checkPuzzle(GLOBAL_CONFIG.escapp.puzzleId, sol, {}, (success, er_state) => {
+    escapp.checkPuzzle(GLOBAL_CONFIG.escapp.puzzleId, sol, {}, (success, erState) => {
       if(success){
         //onOpenScreen(SAFE_OPEN_SCREEN);    
       }
