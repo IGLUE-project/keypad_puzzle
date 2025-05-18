@@ -1,5 +1,3 @@
-export const ESCAPP_CLIENT_SETTINGS = {
-  reusablePuzzle: true,
-}
+export const ESCAPP_CLIENT_SETTINGS = {};
 export const MAIN_SCREEN = "MAIN_SCREEN";
-export const SUCCESS_SCREEN = "SUCCESS_SCREEN";
+export const MESSAGE_SCREEN = "MESSAGE_SCREEN";

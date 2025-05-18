@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import BoxButton from './BoxButton.jsx';
+import React, { useState, useEffect, useContext } from 'react';
+import { GlobalContext } from "./GlobalContext";
 import './../assets/scss/main.scss';
 
+import BoxButton from './BoxButton.jsx';
+
 const MainScreen = (props) => {
-  const [password, setPassword] = useState([]);
-  const [processingClick, setProcessingClick] = useState(false);
-  const [checking, setChecking] = useState(false);
+  const { escapp, Utils, I18n } = useContext(GlobalContext);
+  const [currentSolution, setCurrentSolution] = useState([]);
+  const [processingSolution, setProcessingSolution] = useState(false);
   const [light, setLight] = useState("off");
   const [containerWidth, setContainerWidth] = useState(0);
   const [containerHeight, setContainerHeight] = useState(0);
@@ -15,59 +17,9 @@ const MainScreen = (props) => {
   const [lightLeft, setLightLeft] = useState(0);
   const [lightTop, setLightTop] = useState(0);
 
-  const onClickButton = (value) => {
-    console.log("onClickButton", value);
-    if (processingClick || checking) {
-      return;
-    }
-    setProcessingClick(true);
-
-    if (password.length < props.config.passwordLength) {
-      setPassword((prevPassword) => [...prevPassword, value]);
-    }
-
-    const shortBeep = document.getElementById("audio_beep");
-
-    setTimeout(() => {
-      if (password.length + 1 === props.config.passwordLength) {
-        setChecking(true);
-        setProcessingClick(false);
-
-        const solution = [...password, value].join("");
-        setPassword([]);
-        console.log("Checking solution", solution);
-        //check solution here, to see if change box light to green or red
-        props.escapp.checkPuzzle(props.config.escapp.puzzleId, solution, {}, (success) => {
-          changeboxLight(success, solution);
-        });
-      } else {
-        setProcessingClick(false);
-      }
-    }, 300);
-
-    shortBeep.pause();
-    shortBeep.currentTime = 0;
-    shortBeep.play();
-  }
-
-  const changeBoxLight = (success, solution) => {
-    let audio;
-
-    if (success) {
-      audio = document.getElementById("audio_success");
-      setLight("green");
-    } else {
-      audio = document.getElementById("audio_failure");
-      setLight("red");
-    }
-
-    setTimeout(() => {
-      setLight("off");
-      afterChangeboxLight(success, solution);
-    }, 1000);
-
-    audio.play();
-  }
+  useEffect(() => {
+    handleResize();
+  }, [props.appWidth, props.appHeight]);
 
   function handleResize(){
     let aspectRatio = 4 / 3;
@@ -96,15 +48,66 @@ const MainScreen = (props) => {
     setLightTop(_lightTop);
   }
 
-  useEffect(() => {
-    handleResize();
-  }, [props.appWidth, props.appHeight]);
+  const onClickButton = (value) => {
+    if (processingSolution) {
+      return;
+    }
+    Utils.log("onClickButton", value);
+    setProcessingSolution(true);
+
+    const shortBeep = document.getElementById("audio_beep");
+    shortBeep.pause();
+    shortBeep.currentTime = 0;
+    shortBeep.play();
+
+    setTimeout(() => {
+      currentSolution.push(value);
+
+      let appSettings = escapp.getAppSettings();
+      if (currentSolution.length < appSettings.solutionLength) {
+        setCurrentSolution(currentSolution);
+        setProcessingSolution(false);
+      } else {
+        const solution = currentSolution.join("");
+        setCurrentSolution([]);
+        Utils.log("Check solution", solution);
+        escapp.checkNextPuzzle(solution, {}, (success) => {
+          try {
+            setTimeout(() => {
+              changeBoxLight(success, solution);
+            }, 700);
+          } catch(e){
+            Utils.log("Error in checkNextPuzzle",e);
+          }
+        });
+      }
+    }, 300);
+  }
+
+  const changeBoxLight = (success, solution) => {
+    let audio;
+
+    if (success) {
+      audio = document.getElementById("audio_success");
+      setLight("green");
+    } else {
+      audio = document.getElementById("audio_failure");
+      setLight("red");
+    }
+
+    setTimeout(() => {
+      setLight("off");
+      afterChangeBoxLight(success, solution);
+    }, 1000);
+
+    audio.play();
+  }
 
   const afterChangeBoxLight = (success, solution) => {
+    setProcessingSolution(false);
     if (success) {
-      return props.onTryBoxOpen(solution);
+      return props.onKeypadSolved(solution);
     }
-    setChecking(false);
   };
 
   return (<div id="screen_main" className={"screen_wrapper"}>

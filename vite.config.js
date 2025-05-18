@@ -10,6 +10,9 @@ export default defineConfig(async ({ mode }) => {
   } catch(e){}
 
   return {
+    server: {
+      open: true,
+    },
     plugins: [react()],
     css: {
       preprocessorOptions: {
