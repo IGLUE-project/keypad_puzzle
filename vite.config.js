@@ -2,10 +2,10 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig(async ({ mode }) => {
-  let _ESCAPP_REUSABLE_PUZZLE_SETTINGS = {};
+  let _ESCAPP_APP_SETTINGS = {};
   try {
     if (mode === "development") {
-      _ESCAPP_REUSABLE_PUZZLE_SETTINGS = await import("./config.js").then((mod) => mod.ESCAPP_REUSABLE_PUZZLE_SETTINGS);
+      _ESCAPP_APP_SETTINGS = await import("./config.js").then((mod) => mod.ESCAPP_APP_SETTINGS);
     }
   } catch(e){}
 
@@ -19,8 +19,8 @@ export default defineConfig(async ({ mode }) => {
       },
     },
     define: {
-      ESCAPP_REUSABLE_PUZZLE_SETTINGS: mode === "development"
-        ? JSON.stringify(_ESCAPP_REUSABLE_PUZZLE_SETTINGS)
+      ESCAPP_APP_SETTINGS: mode === "development"
+        ? JSON.stringify(_ESCAPP_APP_SETTINGS)
         : "undefined",
     },
   };

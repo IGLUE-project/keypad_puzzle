@@ -9,7 +9,7 @@ import MainScreen from './MainScreen.jsx';
 
 let escapp;
 let escappClientSettings;
-let reusablePuzzleSettings;
+let appSettings;
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -20,18 +20,6 @@ export default function App() {
   const [appHeight, setAppHeight] = useState(0);
   
   useEffect(() => {
-    escapp = new ESCAPP(ESCAPP_CLIENT_SETTINGS);
-    escappClientSettings = escapp.getSettings();
-    reusablePuzzleSettings = escapp.getReusablePuzzleSettings();
-    console.log("Escapp client initiated with settings:",escappClientSettings);
-    console.log("reusablePuzzleSettings",reusablePuzzleSettings);
-
-    //escapp.displayCustomEscappDialog("Escapp client loaded","Escapp client loaded");
-    
-    //localStorage.clear();  //For development
-    //I18n.init(GLOBAL_CONFIG);
-    //LocalStorage.init(GLOBAL_CONFIG.localStorageKey);
-    
     ESCAPP_CLIENT_SETTINGS.onNewErStateCallback = (er_state) => {
       console.log("New ER state received from ESCAPP", er_state);
       //restoreState(er_state);
@@ -41,6 +29,21 @@ export default function App() {
       console.log("Escape Room restart received from ESCAPP", er_state);
       //LocalStorage.removeSetting("app_state");
     };
+
+    escapp = new ESCAPP(ESCAPP_CLIENT_SETTINGS);
+    escappClientSettings = escapp.getSettings();
+    appSettings = escapp.getAppSettings();
+    console.log("Escapp client initiated with settings:",escappClientSettings);
+    console.log("appSettings",appSettings);
+
+
+    //escapp.displayCustomEscappDialog("Escapp client loaded","Escapp client loaded");
+    
+    //localStorage.clear();  //For development
+    //I18n.init(GLOBAL_CONFIG);
+    //LocalStorage.init(GLOBAL_CONFIG.localStorageKey);
+
+
     escapp.validate((success, er_state) => {
       console.log("ESCAPP validation", success, er_state);
       try { 

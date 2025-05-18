@@ -1,6 +1,6 @@
 //Copy this file to config.js and specify your own settings
 
-export let ESCAPP_REUSABLE_PUZZLE_SETTINGS = {
+export let ESCAPP_APP_SETTINGS = {
   solutionLength: 5,
   locale:"en",
   escappClientSettings: {

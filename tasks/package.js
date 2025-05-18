@@ -18,7 +18,6 @@ if(!fs.existsSync(zip_path)){
 }
 
 // Generate ZIP file
-
 zipFolder(build_path, zip_path + "/dist.zip", function(err){
   if(typeof err === "undefined"){
     //Success 
