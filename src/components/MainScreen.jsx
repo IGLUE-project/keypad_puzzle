@@ -14,6 +14,8 @@ const MainScreen = (props) => {
   const [containerMarginLeft, setContainerMarginLeft] = useState(0);
   const [boxWidth, setBoxWidth] = useState(0);
   const [boxHeight, setBoxHeight] = useState(0);
+  const [lightWidth, setLightWidth] = useState(0);
+  const [lightHeight, setLightHeight] = useState(0);
   const [lightLeft, setLightLeft] = useState(0);
   const [lightTop, setLightTop] = useState(0);
 
@@ -28,14 +30,32 @@ const MainScreen = (props) => {
 
     let _containerWidth = _keypadWidth * 0.22;
     let _containerHeight = _keypadHeight * 0.4;
-    let _containerMarginLeft = _keypadWidth * 0.045;
+    let _containerMarginLeft;
+    if(appSettings.skin === "FUTURISTIC"){
+      _containerMarginLeft = _keypadWidth * -0.065;
+    } else {
+      _containerMarginLeft = _keypadWidth * 0.045;
+    }
 
     let _boxWidth = _keypadWidth * 0.06;
     let _boxHeight = _keypadHeight * 0.1;
 
-    let _lightLeft = props.appWidth / 2 + _keypadWidth / 2 * 0.3;
-    let _lightTop = props.appHeight / 2 - _keypadHeight / 2 * 0.4;
+    let _lightWidth;
+    let _lightHeight;
+    let _lightLeft;
+    let _lightTop;
 
+    if(appSettings.skin === "FUTURISTIC"){
+       _lightWidth = _keypadWidth * 0.045;
+       _lightHeight = _keypadHeight * 0.48;
+      _lightLeft = props.appWidth / 2 + _keypadWidth / 2 * 0.27;
+      _lightTop = props.appHeight / 2 - _keypadHeight / 2 * 0.48;
+    } else {
+       _lightWidth = _keypadWidth * 0.05;
+       _lightHeight = _keypadHeight * 0.5;
+      _lightLeft = props.appWidth / 2 + _keypadWidth / 2 * 0.35;
+      _lightTop = props.appHeight / 2 - _keypadHeight / 2 * 0.8;
+    }
 
     setContainerWidth(_containerWidth);
     setContainerHeight(_containerHeight);
@@ -44,6 +64,8 @@ const MainScreen = (props) => {
     setBoxWidth(_boxWidth);
     setBoxHeight(_boxHeight);
 
+    setLightWidth(_lightWidth);
+    setLightHeight(_lightHeight);
     setLightLeft(_lightLeft);
     setLightTop(_lightTop);
   }
@@ -89,10 +111,10 @@ const MainScreen = (props) => {
 
     if (success) {
       audio = document.getElementById("audio_success");
-      setLight("green");
+      setLight("ok");
     } else {
       audio = document.getElementById("audio_failure");
-      setLight("red");
+      setLight("nok");
     }
 
     setTimeout(() => {
@@ -110,7 +132,8 @@ const MainScreen = (props) => {
     }
   };
 
-  return (<div id="screen_main" className={"screen_wrapper"} style={{ backgroundImage: 'url("images/background_keypad.png"), url("' + appSettings.background + '")' }}>
+  return (
+    <div id="screen_main" className={"screen_wrapper"} style={{ backgroundImage: 'url("' + appSettings.backgroundKeypad + '"), url("' + appSettings.background + '")' }}>
       <div id="keypad_container" style={{ width: containerWidth, height: containerHeight, marginLeft: containerMarginLeft }}>
           <audio id="audio_beep" src="sounds/beep-short.mp3" autostart="false" preload="auto" />
           <audio id="audio_failure" src="sounds/access-denied.mp3" autostart="false" preload="auto" />
@@ -135,9 +158,9 @@ const MainScreen = (props) => {
             <BoxButton value={"0"} position={11} onClick={onClickButton} boxHeight={boxHeight} boxWidth={boxWidth} />
             <BoxButton value={"#"} position={12} onClick={onClickButton} boxHeight={boxHeight} boxWidth={boxWidth} />
           </div>
-          <div className="boxLight boxLight_off" style={{ display: light === "off" ? "block" : "none", left: lightLeft, top: lightTop }} ></div> 
-          <div className="boxLight boxLight_red" style={{ display: light === "red" ? "block" : "none", left: lightLeft, top: lightTop }} ></div> 
-          <div className="boxLight boxLight_green" style={{ display: light === "green" ? "block" : "none", left: lightLeft, top: lightTop }} ></div> 
+          <div className="boxLight boxLight_off" style={{ display: light === "off" ? "block" : "none", width: lightWidth, height: lightHeight, backgroundImage: 'url("' + appSettings.imageLightOff + '")', left: lightLeft, top: lightTop }} ></div> 
+          <div className="boxLight boxLight_nok" style={{ display: light === "nok" ? "block" : "none", width: lightWidth, height: lightHeight, backgroundImage: 'url("' + appSettings.imageLightNok + '")', left: lightLeft, top: lightTop }} ></div> 
+          <div className="boxLight boxLight_ok" style={{ display: light === "ok" ? "block" : "none", width: lightWidth, height: lightHeight, backgroundImage: 'url("' + appSettings.imageLightOk + '")', left: lightLeft, top: lightTop }} ></div> 
         </div>
     </div>);
 };

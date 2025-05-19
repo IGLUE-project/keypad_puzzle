@@ -3,7 +3,7 @@ import { GlobalContext } from "./GlobalContext";
 import './../assets/scss/message.scss';
 
 const MessageScreen = (props) => {
-  const { escapp, Utils, I18n } = useContext(GlobalContext);
+  const { escapp, appSettings, Utils, I18n } = useContext(GlobalContext);
   const [containerWidth, setContainerWidth] = useState(0);
   const [containerHeight, setContainerHeight] = useState(0);
   const [containerMarginRight, setContainerMarginRight] = useState(0);
@@ -34,7 +34,7 @@ const MessageScreen = (props) => {
   }
 
   return (
-    <div id="screen_message" className="screen_wrapper">
+    <div id="screen_message" className="screen_wrapper" style={{ backgroundImage: 'url("' + appSettings.backgroundMessage + '"), url("' + appSettings.background + '")' }}>
       <div id="message_container" style={{ width: containerWidth, height: containerHeight, marginRight: containerMarginRight, marginTop: containerMarginTop }}><pre>{I18n.getTrans("i.message")}</pre></div>
       <div className="message_button" onClick={() => props.submitPuzzleSolution()}>{I18n.getTrans("i.continue")}</div>
     </div>

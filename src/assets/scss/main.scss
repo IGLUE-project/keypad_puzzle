@@ -58,22 +58,8 @@ div.boxLight {
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: contain;
-	width: 8vmin;
-	height: 6vmin;
 	border: none;
 	outline: none;
 	text-decoration: none;
 	border-image: none;
-}
-
-div.boxLight.boxLight_off {
-	background-image: url("images/light_off.png");
-}
-
-div.boxLight.boxLight_red {
-	background-image: url("images/light_red.png");
-}
-
-div.boxLight.boxLight_green {
-	background-image: url("images/light_green.png");
 }
