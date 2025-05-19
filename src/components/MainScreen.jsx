@@ -5,7 +5,7 @@ import './../assets/scss/main.scss';
 import BoxButton from './BoxButton.jsx';
 
 const MainScreen = (props) => {
-  const { escapp, Utils, I18n } = useContext(GlobalContext);
+  const { escapp, appSettings, Utils, I18n } = useContext(GlobalContext);
   const [currentSolution, setCurrentSolution] = useState([]);
   const [processingSolution, setProcessingSolution] = useState(false);
   const [light, setLight] = useState("off");
@@ -110,7 +110,7 @@ const MainScreen = (props) => {
     }
   };
 
-  return (<div id="screen_main" className={"screen_wrapper"}>
+  return (<div id="screen_main" className={"screen_wrapper"} style={{ backgroundImage: 'url("images/background_keypad.png"), url("' + appSettings.background + '")' }}>
       <div id="keypad_container" style={{ width: containerWidth, height: containerHeight, marginLeft: containerMarginLeft }}>
           <audio id="audio_beep" src="sounds/beep-short.mp3" autostart="false" preload="auto" />
           <audio id="audio_failure" src="sounds/access-denied.mp3" autostart="false" preload="auto" />
