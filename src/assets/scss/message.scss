@@ -1,5 +1,5 @@
 div#screen_message {
-	background-image: url("../images/background_message.jpg");
+	background-image: url("../images/background_message.png"), url("../images/background.png");
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: contain;
@@ -12,6 +12,7 @@ div#screen_message {
 }
 
 div#message_container {
+	text-align: center;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;

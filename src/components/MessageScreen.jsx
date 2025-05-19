@@ -22,9 +22,9 @@ const MessageScreen = (props) => {
     let _keypadWidth = Math.min(props.appHeight * aspectRatio, props.appWidth);
     let _keypadHeight = _keypadWidth / aspectRatio;
 
-    let _containerWidth = _keypadWidth * 0.5;
+    let _containerWidth = _keypadWidth * 0.49;
     let _containerHeight = _keypadHeight * 0.5;
-    let _containerMarginRight = _keypadWidth * 0.05;
+    let _containerMarginRight = _keypadWidth * 0.018;
     let _containerMarginTop = _keypadHeight * 0.03;
 
     setContainerWidth(_containerWidth);

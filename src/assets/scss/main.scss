@@ -1,5 +1,5 @@
 div#screen_main {
-	background-image: url("../images/background.jpg");
+	background-image: url("../images/background_keypad.png"), url("../images/background.png");
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: contain;
@@ -23,7 +23,7 @@ div#keypad_container div.row {
 }
 
 div.boxButton {
-	background-image: url("../images/background_key.jpg");
+	background-image: url("../images/background_key.png");
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: contain;
