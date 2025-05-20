@@ -11,13 +11,13 @@ const MessageScreen = (props) => {
 
   useEffect(() => {
     handleResize();
-  }, []);
-
-  useEffect(() => {
-    handleResize();
   }, [props.appWidth, props.appHeight]);
 
   function handleResize(){
+    if((props.appHeight === 0)||(props.appWidth === 0)){
+      return;
+    }
+
     let aspectRatio = 4 / 3;
     let _keypadWidth = Math.min(props.appHeight * aspectRatio, props.appWidth);
     let _keypadHeight = _keypadWidth / aspectRatio;
@@ -32,10 +32,12 @@ const MessageScreen = (props) => {
     setContainerMarginRight(_containerMarginRight);
     setContainerMarginTop(_containerMarginTop);
   }
-
+  
   return (
     <div id="screen_message" className="screen_content" style={{ backgroundImage: 'url("' + appSettings.backgroundMessage + '"), url("' + appSettings.background + '")' }}>
-      <div id="message_text" style={{ width: containerWidth, height: containerHeight, marginRight: containerMarginRight, marginTop: containerMarginTop }}><pre>{I18n.getTrans("i.message")}</pre></div>
+      <div id="message_text" style={{ width: containerWidth, height: containerHeight, marginRight: containerMarginRight, marginTop: containerMarginTop }}>
+        <pre>{I18n.getTrans("i.message")}</pre>
+      </div>
       <div className="message_button" onClick={() => props.submitPuzzleSolution()}>{I18n.getTrans("i.continue")}</div>
     </div>
   );

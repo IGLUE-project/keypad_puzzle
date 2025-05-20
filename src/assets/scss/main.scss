@@ -22,7 +22,6 @@ div#keypad div.row {
 }
 
 div.boxButton {
-	background-image: url("images/background_key.png");
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: contain;
@@ -51,6 +50,10 @@ div.boxButton li {
     -ms-user-select: none; 
     user-select: none;
     cursor: pointer; 
+}
+
+div.retro div.boxButton li {
+	font-weight: bold;
 }
 
 div.boxLight {

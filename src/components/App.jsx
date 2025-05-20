@@ -120,7 +120,9 @@ export default function App() {
   }, [escapp, appSettings, Storage]);
 
   useEffect(() => {
-    handleResize();
+    if(loading === false){
+      handleResize();
+    }
   }, [loading]);
 
   useEffect(() => {
@@ -231,7 +233,7 @@ export default function App() {
   ];
 
   return (
-    <div id="global_wrapper" ref={globalWrapperDiv}>
+    <div id="global_wrapper" ref={globalWrapperDiv} className={`${(appSettings !== null && typeof appSettings.skin === "string") ? appSettings.skin.toLowerCase() : ''}`}>
       {renderScreens(screens)}
     </div>
   )

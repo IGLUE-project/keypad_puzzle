@@ -11,6 +11,7 @@ const MainScreen = (props) => {
   const [light, setLight] = useState("off");
   const [containerWidth, setContainerWidth] = useState(0);
   const [containerHeight, setContainerHeight] = useState(0);
+  const [containerMarginTop, setContainerMarginTop] = useState(0);
   const [containerMarginLeft, setContainerMarginLeft] = useState(0);
   const [boxWidth, setBoxWidth] = useState(0);
   const [boxHeight, setBoxHeight] = useState(0);
@@ -24,6 +25,10 @@ const MainScreen = (props) => {
   }, [props.appWidth, props.appHeight]);
 
   function handleResize(){
+    if((props.appHeight === 0)||(props.appWidth === 0)){
+      return;
+    }
+
     let aspectRatio = 4 / 3;
     let _keypadWidth = Math.min(props.appHeight * aspectRatio, props.appWidth);
     let _keypadHeight = _keypadWidth / aspectRatio;
@@ -31,11 +36,7 @@ const MainScreen = (props) => {
     let _containerWidth = _keypadWidth * 0.22;
     let _containerHeight = _keypadHeight * 0.4;
     let _containerMarginLeft;
-    if(appSettings.skin === "FUTURISTIC"){
-      _containerMarginLeft = _keypadWidth * -0.065;
-    } else {
-      _containerMarginLeft = _keypadWidth * 0.045;
-    }
+    let _containerMarginTop;
 
     let _boxWidth = _keypadWidth * 0.06;
     let _boxHeight = _keypadHeight * 0.1;
@@ -45,20 +46,36 @@ const MainScreen = (props) => {
     let _lightLeft;
     let _lightTop;
 
-    if(appSettings.skin === "FUTURISTIC"){
-       _lightWidth = _keypadWidth * 0.045;
-       _lightHeight = _keypadHeight * 0.48;
-      _lightLeft = props.appWidth / 2 + _keypadWidth / 2 * 0.27;
-      _lightTop = props.appHeight / 2 - _keypadHeight / 2 * 0.48;
-    } else {
-       _lightWidth = _keypadWidth * 0.05;
-       _lightHeight = _keypadHeight * 0.5;
-      _lightLeft = props.appWidth / 2 + _keypadWidth / 2 * 0.35;
-      _lightTop = props.appHeight / 2 - _keypadHeight / 2 * 0.8;
+    switch(appSettings.skin){
+      case "RETRO":
+        _containerMarginTop = _keypadHeight * 0.13;
+        _containerMarginLeft = _keypadWidth * 0.045;
+        _lightWidth = _keypadWidth * 0.08;
+        _lightHeight = _keypadHeight * 0.11;
+        _lightLeft = props.appWidth / 2 - _keypadWidth * 0.02;
+        _lightTop = props.appHeight / 2 - _keypadHeight * 0.25;
+        break;
+      case "FUTURISTIC":
+        _containerMarginTop = 0;
+        _containerMarginLeft = _keypadWidth * -0.065;
+         _lightWidth = _keypadWidth * 0.045;
+        _lightHeight = _keypadHeight * 0.48;
+        _lightLeft = props.appWidth / 2 + _keypadWidth / 2 * 0.27;
+        _lightTop = props.appHeight / 2 - _keypadHeight / 2 * 0.48;
+        break;
+      default:
+        //Standard skin
+        _containerMarginTop = 0;
+        _containerMarginLeft = _keypadWidth * 0.045;
+        _lightWidth = _keypadWidth * 0.05;
+        _lightHeight = _keypadHeight * 0.5;
+        _lightLeft = props.appWidth / 2 + _keypadWidth / 2 * 0.35;
+        _lightTop = props.appHeight / 2 - _keypadHeight / 2 * 0.8;
     }
 
     setContainerWidth(_containerWidth);
     setContainerHeight(_containerHeight);
+    setContainerMarginTop(_containerMarginTop);
     setContainerMarginLeft(_containerMarginLeft);
 
     setBoxWidth(_boxWidth);
@@ -118,7 +135,9 @@ const MainScreen = (props) => {
     }
 
     setTimeout(() => {
-      setLight("off");
+      if((success===false)||(appSettings.skin != "RETRO")){
+        setLight("off");
+      }
       afterChangeBoxLight(success, solution);
     }, 1000);
 
@@ -134,7 +153,7 @@ const MainScreen = (props) => {
 
   return (
     <div id="screen_main" className={"screen_content"} style={{ backgroundImage: 'url("' + appSettings.backgroundKeypad + '"), url("' + appSettings.background + '")' }}>
-      <div id="keypad" style={{ width: containerWidth, height: containerHeight, marginLeft: containerMarginLeft }}>
+      <div id="keypad" style={{ width: containerWidth, height: containerHeight, marginTop: containerMarginTop, marginLeft: containerMarginLeft }}>
         <audio id="audio_beep" src={appSettings.soundBeep} autostart="false" preload="auto" />
         <audio id="audio_failure" src={appSettings.soundNok} autostart="false" preload="auto" />
         <audio id="audio_success" src={appSettings.soundOk} autostart="false" preload="auto" />

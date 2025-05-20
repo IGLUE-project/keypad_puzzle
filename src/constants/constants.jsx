@@ -3,6 +3,7 @@ export const DEFAULT_APP_SETTINGS = {
 	skin: "STANDARD",
 	background: "images/background.png",
 	backgroundKeypad: "images/background_keypad.png",
+	backgroundKey: "images/background_key.png",
 	backgroundMessage: "images/background_message.png",
 	imageLightOff: "images/light_off.png",
 	imageLightNok: "images/light_nok.png",
@@ -14,14 +15,16 @@ export const DEFAULT_APP_SETTINGS = {
 
 export const SKIN_SETTINGS_RETRO = {
 	backgroundKeypad: "images/background_keypad_retro.png",
+	backgroundKey: "images/background_key_retro.png",
 	backgroundMessage: "images/background_message_retro.png",
 	imageLightOff: "images/light_off_retro.png",
-	imageLightNok: "images/light_nok_retro.png",
+	imageLightNok: "images/light_off_retro.png",
 	imageLightOk: "images/light_ok_retro.png",
 };
 
 export const SKIN_SETTINGS_FUTURISTIC = {
 	backgroundKeypad: "images/background_keypad_futuristic.png",
+	backgroundKey: "images/background_key.png",
 	backgroundMessage: "images/background_message_futuristic.png",
 	imageLightOff: "images/light_off_futuristic.png",
 	imageLightNok: "images/light_nok_futuristic.png",
