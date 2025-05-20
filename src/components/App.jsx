@@ -14,7 +14,6 @@ export default function App() {
   const [screen, setScreen] = useState(MAIN_SCREEN);
   const prevScreen = useRef(screen);
   const solution = useRef(null);
-  const globalWrapperDiv = useRef(null);
   const [appWidth, setAppWidth] = useState(0);
   const [appHeight, setAppHeight] = useState(0);
   
@@ -134,11 +133,8 @@ export default function App() {
   }, [screen]);
 
   function handleResize(){
-    let wrapper = globalWrapperDiv.current;
-    if(wrapper){
-      setAppWidth(wrapper.offsetWidth);
-      setAppHeight(wrapper.offsetHeight);
-    }
+    setAppWidth(window.innerWidth);
+    setAppHeight(window.innerHeight);
   }
 
   function restoreAppState(erState){
@@ -205,15 +201,17 @@ export default function App() {
     });
   }
 
-  if(loading){
-      return "";
-  }
-
-  const renderScreens = (screens) => (
-    <>
-      {screens.map(({ id, content }) => renderScreen(id, content))}
-    </>
-  );
+  const renderScreens = (screens) => {
+    if (loading === true) {
+      return null;
+    } else {
+      return (
+        <>
+          {screens.map(({ id, content }) => renderScreen(id, content))}
+        </>
+      );
+    }
+  };
 
   const renderScreen = (screenId, screenContent) => (
     <div key={screenId} className={`screen_wrapper ${screen === screenId ? 'active' : ''}`} >
@@ -233,7 +231,7 @@ export default function App() {
   ];
 
   return (
-    <div id="global_wrapper" ref={globalWrapperDiv} className={`${(appSettings !== null && typeof appSettings.skin === "string") ? appSettings.skin.toLowerCase() : ''}`}>
+    <div id="global_wrapper" className={`${(appSettings !== null && typeof appSettings.skin === "string") ? appSettings.skin.toLowerCase() : ''}`}>
       {renderScreens(screens)}
     </div>
   )
