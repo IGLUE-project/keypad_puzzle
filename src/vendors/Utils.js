@@ -25,6 +25,44 @@ export function replaceAll(string, find, replace){
   return string.replace(new RegExp(find.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'g'), replace);
 };
 
+export function preloadImages(images){
+  if (!Array.isArray(images)) {
+    return;
+  }
+  for (const url of images) {
+    if (typeof url === 'string') {
+      const img = new Image();
+      img.src = url;
+    } 
+  }
+};
+
+export function preloadAudios(sources){
+  if (!Array.isArray(sources)) {
+    return;
+  }
+  sources.forEach(src => {
+    const audio = new Audio();
+    audio.src = src;
+    audio.preload = "auto";
+  });
+};
+
+export function preloadVideos(sources) {
+  if (!Array.isArray(sources)) {
+    return;
+  }
+
+  sources.forEach(src => {
+    const video = document.createElement("video");
+    video.src = src;
+    video.preload = "auto";
+    video.muted = true;
+    video.style.display = "none";
+    document.body.appendChild(video);
+  });
+}
+
 export function isImage(url){
   if(typeof url === "string"){
     //Remove options

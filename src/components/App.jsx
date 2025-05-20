@@ -14,22 +14,25 @@ export default function App() {
   const [screen, setScreen] = useState(MAIN_SCREEN);
   const prevScreen = useRef(screen);
   const solution = useRef(null);
-  const wrapperDiv = useRef(null);
+  const globalWrapperDiv = useRef(null);
   const [appWidth, setAppWidth] = useState(0);
   const [appHeight, setAppHeight] = useState(0);
   
   useEffect(() => {
     //Init Escapp client
+    if(escapp !== null){
+      return;
+    }
     //Create the Escapp client instance.
-    let escapp = new ESCAPP(ESCAPP_CLIENT_SETTINGS);
-    setEscapp(escapp);
-    Utils.log("Escapp client initiated with settings:", escapp.getSettings());
+    let _escapp = new ESCAPP(ESCAPP_CLIENT_SETTINGS);
+    setEscapp(_escapp);
+    Utils.log("Escapp client initiated with settings:", _escapp.getSettings());
 
     //Use the storage feature provided by Escapp client.
-    setStorage(escapp.getStorage());
+    setStorage(_escapp.getStorage());
 
     //Get app settings provided by the Escapp server.
-    let _appSettings = processAppSettings(escapp.getAppSettings());
+    let _appSettings = processAppSettings(_escapp.getAppSettings());
     setAppSettings(_appSettings);
     Utils.log("App settings:", _appSettings);
 
@@ -67,6 +70,11 @@ export default function App() {
     if(!allowedActions.includes(_appSettings.actionAfterSolve)) {
       _appSettings.actionAfterSolve = DEFAULT_APP_SETTINGS.actionAfterSolve;
     }
+
+    //Preload resources (if necessary)
+    Utils.preloadImages([_appSettings.backgroundMessage]);
+    //Utils.preloadAudios([_appSettings.soundBeep,_appSettings.soundNok,_appSettings.soundOk]); //Preload done through HTML audio tags
+    //Utils.preloadVideos(["videos/some_video.mp4"]);
 
     return _appSettings;
   }
@@ -124,7 +132,7 @@ export default function App() {
   }, [screen]);
 
   function handleResize(){
-    let wrapper = wrapperDiv.current;
+    let wrapper = globalWrapperDiv.current;
     if(wrapper){
       setAppWidth(wrapper.offsetWidth);
       setAppHeight(wrapper.offsetHeight);
@@ -199,22 +207,32 @@ export default function App() {
       return "";
   }
 
-  const renderScreen = (content) => (
-    <div id="wrapper" ref={wrapperDiv}>
-      {content}
+  const renderScreens = (screens) => (
+    <>
+      {screens.map(({ id, content }) => renderScreen(id, content))}
+    </>
+  );
+
+  const renderScreen = (screenId, screenContent) => (
+    <div key={screenId} className={`screen_wrapper ${screen === screenId ? 'active' : ''}`} >
+      {screenContent}
     </div>
   );
 
-  switch(screen){
-    case MAIN_SCREEN:
-      return renderScreen(
-        <MainScreen appHeight={appHeight} appWidth={appWidth} onKeypadSolved={onKeypadSolved} />
-      );
-    case MESSAGE_SCREEN:
-      return renderScreen(
-        <MessageScreen submitPuzzleSolution={submitPuzzleSolution} appHeight={appHeight} appWidth={appWidth} />
-      );
-    default:
-      return renderScreen(screen);
-  }
+  let screens = [
+    {
+      id: MAIN_SCREEN,
+      content: <MainScreen appHeight={appHeight} appWidth={appWidth} onKeypadSolved={onKeypadSolved} />
+    },
+    {
+      id: MESSAGE_SCREEN,
+      content: <MessageScreen appHeight={appHeight} appWidth={appWidth} submitPuzzleSolution={submitPuzzleSolution} />
+    }
+  ];
+
+  return (
+    <div id="global_wrapper" ref={globalWrapperDiv}>
+      {renderScreens(screens)}
+    </div>
+  )
 }

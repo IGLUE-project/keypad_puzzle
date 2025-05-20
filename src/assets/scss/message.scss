@@ -10,7 +10,7 @@ div#screen_message {
 	font-family: "Consolas", "Roboto", sans-serif;
 }
 
-div#message_container {
+div#message_text {
 	text-align: center;
 	display: flex;
 	flex-direction: column;
@@ -24,7 +24,7 @@ div#message_container {
 	user-select: none;
 }
 
-div#message_container pre {
+div#message_text pre {
 	white-space: pre-line;
 }
 

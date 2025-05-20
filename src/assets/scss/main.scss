@@ -8,13 +8,13 @@ div#screen_main {
 	justify-content: center;
 }
 
-div#keypad_container {
+div#keypad {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
 }
 
-div#keypad_container div.row {
+div#keypad div.row {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;

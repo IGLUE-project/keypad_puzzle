@@ -7,6 +7,9 @@ export const DEFAULT_APP_SETTINGS = {
 	imageLightOff: "images/light_off.png",
 	imageLightNok: "images/light_nok.png",
 	imageLightOk: "images/light_ok.png",
+	soundBeep: "sounds/beep.mp3",
+	soundNok: "sounds/solution_nok.mp3",
+	soundOk: "sounds/solution_ok.mp3",
 };
 
 export const SKIN_SETTINGS_RETRO = {
