@@ -32,11 +32,11 @@ const MessageScreen = (props) => {
     setContainerMarginRight(_containerMarginRight);
     setContainerMarginTop(_containerMarginTop);
   }
-  
+
   return (
     <div id="screen_message" className="screen_content" style={{ backgroundImage: 'url("' + appSettings.backgroundMessage + '"), url("' + appSettings.background + '")' }}>
       <div id="message_text" style={{ width: containerWidth, height: containerHeight, marginRight: containerMarginRight, marginTop: containerMarginTop }}>
-        <pre>{I18n.getTrans("i.message")}</pre>
+        <pre>{appSettings.message}</pre>
       </div>
       <div className="message_button" onClick={() => props.submitPuzzleSolution()}>{I18n.getTrans("i.continue")}</div>
     </div>

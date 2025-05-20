@@ -33,6 +33,14 @@ div.boxButton:active {
 	transform: scale(0.9);
 }
 
+div.retro div.boxButton {
+  transition: transform 0.4s ease;
+}
+
+div.retro div.boxButton:active {
+	transform: scale(0.85);
+}
+
 div.boxButton li {
 	display: flex;
 	justify-content: center;
@@ -43,16 +51,19 @@ div.boxButton li {
 	text-align: center;
 	font-size: 4vmin;
 	font-family: "Consolas", "Roboto", sans-serif;
-  	-webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none; 
-    -moz-user-select: none;
-    -ms-user-select: none; 
-    user-select: none;
-    cursor: pointer; 
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none; 
+  -moz-user-select: none;
+  -ms-user-select: none; 
+  user-select: none;
+  cursor: pointer; 
 }
 
 div.retro div.boxButton li {
+  padding-top: 0.5px;
+  font-size: 3.5vmin;
+  font-family: 'Retro';
 	font-weight: bold;
 }
 
@@ -65,4 +76,8 @@ div.boxLight {
 	outline: none;
 	text-decoration: none;
 	border-image: none;
+}
+
+div.retro div.boxLight {
+	transition: opacity 6.1s ease, visibility ease 6.1s;
 }

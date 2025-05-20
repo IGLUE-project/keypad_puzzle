@@ -35,9 +35,6 @@ export default function App() {
     setAppSettings(_appSettings);
     Utils.log("App settings:", _appSettings);
 
-    //Init internacionalization module
-    I18n.init(_appSettings);
-
     window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleResize);
@@ -70,6 +67,32 @@ export default function App() {
       _appSettings.actionAfterSolve = DEFAULT_APP_SETTINGS.actionAfterSolve;
     }
 
+    switch(_appSettings.keysType){
+      case "LETTERS":
+        _appSettings.keys = _appSettings.letters;
+        _appSettings.backgroundKeys = new Array(12).fill(_appSettings.backgroundKey);
+        break;
+      case "COLORS":
+        _appSettings.keys = _appSettings.colors;
+        _appSettings.backgroundKeys = _appSettings.coloredBackgroundKeys;
+        break;
+      case "SYMBOLS":
+        _appSettings.keys = _appSettings.letters;
+        _appSettings.backgroundKeys = new Array(12).fill(_appSettings.backgroundKey);
+        break;
+      default:
+        //NUMBERS
+        _appSettings.keys = _appSettings.numbers;
+        _appSettings.backgroundKeys = new Array(12).fill(_appSettings.backgroundKey);
+    }
+
+    //Init internacionalization module
+    I18n.init(_appSettings);
+
+    if(typeof _appSettings.message !== "string"){
+      _appSettings.message = I18n.getTrans("i.message");
+    }
+    
     //Preload resources (if necessary)
     Utils.preloadImages([_appSettings.backgroundMessage]);
     //Utils.preloadAudios([_appSettings.soundBeep,_appSettings.soundNok,_appSettings.soundOk]); //Preload done through HTML audio tags
@@ -193,11 +216,11 @@ export default function App() {
   function submitPuzzleSolution(){
     Utils.log("Submit puzzle solution", solution.current);
 
-    escapp.submitNextPuzzle(solution.current, {}, (success) => {
+    escapp.submitNextPuzzle(solution.current, {}, (success, erState) => {
       if(!success){
         setScreen(MAIN_SCREEN);
       }
-      Utils.log("Solution submitted to Escapp", success);
+      Utils.log("Solution submitted to Escapp", solution.current, success, erState);
     });
   }
 

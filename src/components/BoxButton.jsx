@@ -4,9 +4,9 @@ import { GlobalContext } from "./GlobalContext";
 const BoxButton = (props) => {
   const {  appSettings } = useContext(GlobalContext);
   return (
-    <div className={"boxButton boxButton" + props.position} onClick={() => props.onClick(props.value)} style={{ width: props.boxWidth, height: props.boxHeight, backgroundImage: 'url("' + appSettings.backgroundKey + '")' }}>
+    <div className={"boxButton boxButton" + props.position} onClick={() => props.onClick(props.value)} style={{ width: props.boxWidth, height: props.boxHeight, backgroundImage: 'url("' + appSettings.backgroundKeys[props.position-1] + '")' }}>
       <li>
-        <p>{props.value}</p>
+        <p>{appSettings.keysType === "COLORS" ? "" : props.value}</p>
       </li>
     </div>
   );

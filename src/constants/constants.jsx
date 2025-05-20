@@ -1,9 +1,41 @@
 export const DEFAULT_APP_SETTINGS = {
-	actionAfterSolve: "NONE",
 	skin: "STANDARD",
+	actionAfterSolve: "NONE",
+	message: undefined,
+	keysType: "NUMBERS",
 	background: "images/background.png",
 	backgroundKeypad: "images/background_keypad.png",
 	backgroundKey: "images/background_key.png",
+	numbers: ["1","2","3","4","5","6","7","8","9","*","0","#"],
+	letters: ["A","B","C","D","E","F","G","H","I","J","K","L"],
+	colors : [
+      "Red", //#FF0000
+      "Green", //#008000
+      "Blue", //#0000FF
+      "Yellow", //#FFFF00
+      "Orange", //#FFA500
+      "Pink", //#FF1493
+      "Cyan", //#00FFFF
+      "Purple", //#800080
+      "Brown", //#8B4513
+      "Black", //#000000
+      "Gray", //#808080
+      "White", //#FFFFFF
+    ],
+	coloredBackgroundKeys: [
+      "images/background_key_red.png",
+      "images/background_key_green.png",
+      "images/background_key_blue.png",
+      "images/background_key_yellow.png",
+      "images/background_key_orange.png",
+      "images/background_key_pink.png",
+      "images/background_key_cyan.png",
+      "images/background_key_purple.png",
+      "images/background_key_brown.png",
+      "images/background_key.png",
+      "images/background_key_gray.png",
+      "images/background_key_white.png",
+    ],
 	backgroundMessage: "images/background_message.png",
 	imageLightOff: "images/light_off.png",
 	imageLightNok: "images/light_nok.png",
@@ -16,10 +48,27 @@ export const DEFAULT_APP_SETTINGS = {
 export const SKIN_SETTINGS_RETRO = {
 	backgroundKeypad: "images/background_keypad_retro.png",
 	backgroundKey: "images/background_key_retro.png",
+	coloredBackgroundKeys: [
+      "images/background_key_retro_red.png",
+      "images/background_key_retro_green.png",
+      "images/background_key_retro_blue.png",
+      "images/background_key_retro_yellow.png",
+      "images/background_key_retro_orange.png",
+      "images/background_key_retro_pink.png",
+      "images/background_key_retro_cyan.png",
+      "images/background_key_retro_purple.png",
+      "images/background_key_retro_brown.png",
+      "images/background_key_retro_black.png",
+      "images/background_key_retro_gray.png",
+      "images/background_key_retro_white.png",
+    ],
 	backgroundMessage: "images/background_message_retro.png",
 	imageLightOff: "images/light_off_retro.png",
 	imageLightNok: "images/light_off_retro.png",
 	imageLightOk: "images/light_ok_retro.png",
+	soundBeep: "sounds/beep_retro.wav",
+	soundNok: "sounds/solution_nok_retro.wav",
+	soundOk: "sounds/solution_ok_retro.wav",
 };
 
 export const SKIN_SETTINGS_FUTURISTIC = {
@@ -29,6 +78,7 @@ export const SKIN_SETTINGS_FUTURISTIC = {
 	imageLightOff: "images/light_off_futuristic.png",
 	imageLightNok: "images/light_nok_futuristic.png",
 	imageLightOk: "images/light_ok_futuristic.png",
+	soundNok: "sounds/solution_nok_futuristic.wav",
 };
 
 export const ESCAPP_CLIENT_SETTINGS = {};

@@ -101,16 +101,15 @@ const MainScreen = (props) => {
 
     setTimeout(() => {
       currentSolution.push(value);
-
-      let appSettings = escapp.getAppSettings();
       if (currentSolution.length < appSettings.solutionLength) {
         setCurrentSolution(currentSolution);
         setProcessingSolution(false);
       } else {
-        const solution = currentSolution.join("");
+        const solution = currentSolution.join((appSettings.keysType === "COLORS") ? ";" : "");
         setCurrentSolution([]);
         Utils.log("Check solution", solution);
-        escapp.checkNextPuzzle(solution, {}, (success) => {
+        escapp.checkNextPuzzle(solution, {}, (success, erState) => {
+          Utils.log("Check solution Escapp response", success, erState);
           try {
             setTimeout(() => {
               changeBoxLight(success, solution);
@@ -125,10 +124,12 @@ const MainScreen = (props) => {
 
   const changeBoxLight = (success, solution) => {
     let audio;
+    let afterChangeBoxLightDelay = 1000;
 
     if (success) {
       audio = document.getElementById("audio_success");
       setLight("ok");
+      afterChangeBoxLightDelay = (appSettings.skin === "RETRO" ? 4500 : 1500);
     } else {
       audio = document.getElementById("audio_failure");
       setLight("nok");
@@ -137,19 +138,15 @@ const MainScreen = (props) => {
     setTimeout(() => {
       if((success===false)||(appSettings.skin != "RETRO")){
         setLight("off");
+        setProcessingSolution(false);
       }
-      afterChangeBoxLight(success, solution);
-    }, 1000);
+      if (success) {
+        props.onKeypadSolved(solution);
+      }
+    }, afterChangeBoxLightDelay);
 
     audio.play();
   }
-
-  const afterChangeBoxLight = (success, solution) => {
-    setProcessingSolution(false);
-    if (success) {
-      return props.onKeypadSolved(solution);
-    }
-  };
 
   return (
     <div id="screen_main" className={"screen_content"} style={{ backgroundImage: 'url("' + appSettings.backgroundKeypad + '"), url("' + appSettings.background + '")' }}>
@@ -158,28 +155,28 @@ const MainScreen = (props) => {
         <audio id="audio_failure" src={appSettings.soundNok} autostart="false" preload="auto" />
         <audio id="audio_success" src={appSettings.soundOk} autostart="false" preload="auto" />
         <div id="row1" className="row">
-          <BoxButton value={"1"} position={1} onClick={onClickButton} boxHeight={boxHeight} boxWidth={boxWidth} />
-          <BoxButton value={"2"} position={2} onClick={onClickButton} boxHeight={boxHeight} boxWidth={boxWidth} />
-          <BoxButton value={"3"} position={3} onClick={onClickButton} boxHeight={boxHeight} boxWidth={boxWidth} />
+          <BoxButton value={appSettings.keys[0]} position={1} onClick={onClickButton} boxHeight={boxHeight} boxWidth={boxWidth} />
+          <BoxButton value={appSettings.keys[1]} position={2} onClick={onClickButton} boxHeight={boxHeight} boxWidth={boxWidth} />
+          <BoxButton value={appSettings.keys[2]} position={3} onClick={onClickButton} boxHeight={boxHeight} boxWidth={boxWidth} />
         </div>
         <div id="row2" className="row">
-          <BoxButton value={"4"} position={4} onClick={onClickButton} boxHeight={boxHeight} boxWidth={boxWidth} />
-          <BoxButton value={"5"} position={5} onClick={onClickButton} boxHeight={boxHeight} boxWidth={boxWidth} />
-          <BoxButton value={"6"} position={6} onClick={onClickButton} boxHeight={boxHeight} boxWidth={boxWidth} />
+          <BoxButton value={appSettings.keys[3]} position={4} onClick={onClickButton} boxHeight={boxHeight} boxWidth={boxWidth} />
+          <BoxButton value={appSettings.keys[4]} position={5} onClick={onClickButton} boxHeight={boxHeight} boxWidth={boxWidth} />
+          <BoxButton value={appSettings.keys[5]} position={6} onClick={onClickButton} boxHeight={boxHeight} boxWidth={boxWidth} />
         </div>
         <div id="row3" className="row">
-          <BoxButton value={"7"} position={7} onClick={onClickButton} boxHeight={boxHeight} boxWidth={boxWidth} />
-          <BoxButton value={"8"} position={8} onClick={onClickButton} boxHeight={boxHeight} boxWidth={boxWidth} />
-          <BoxButton value={"9"} position={9} onClick={onClickButton} boxHeight={boxHeight} boxWidth={boxWidth} />
+          <BoxButton value={appSettings.keys[6]} position={7} onClick={onClickButton} boxHeight={boxHeight} boxWidth={boxWidth} />
+          <BoxButton value={appSettings.keys[7]} position={8} onClick={onClickButton} boxHeight={boxHeight} boxWidth={boxWidth} />
+          <BoxButton value={appSettings.keys[8]} position={9} onClick={onClickButton} boxHeight={boxHeight} boxWidth={boxWidth} />
         </div>
         <div id="row4" className="row">
-          <BoxButton value={"*"} position={10} onClick={onClickButton} boxHeight={boxHeight} boxWidth={boxWidth} />
-          <BoxButton value={"0"} position={11} onClick={onClickButton} boxHeight={boxHeight} boxWidth={boxWidth} />
-          <BoxButton value={"#"} position={12} onClick={onClickButton} boxHeight={boxHeight} boxWidth={boxWidth} />
+          <BoxButton value={appSettings.keys[9]} position={10} onClick={onClickButton} boxHeight={boxHeight} boxWidth={boxWidth} />
+          <BoxButton value={appSettings.keys[10]} position={11} onClick={onClickButton} boxHeight={boxHeight} boxWidth={boxWidth} />
+          <BoxButton value={appSettings.keys[11]} position={12} onClick={onClickButton} boxHeight={boxHeight} boxWidth={boxWidth} />
         </div>
-        <div className="boxLight boxLight_off" style={{ display: light === "off" ? "block" : "none", width: lightWidth, height: lightHeight, backgroundImage: 'url("' + appSettings.imageLightOff + '")', left: lightLeft, top: lightTop }} ></div> 
-        <div className="boxLight boxLight_nok" style={{ display: light === "nok" ? "block" : "none", width: lightWidth, height: lightHeight, backgroundImage: 'url("' + appSettings.imageLightNok + '")', left: lightLeft, top: lightTop }} ></div> 
-        <div className="boxLight boxLight_ok" style={{ display: light === "ok" ? "block" : "none", width: lightWidth, height: lightHeight, backgroundImage: 'url("' + appSettings.imageLightOk + '")', left: lightLeft, top: lightTop }} ></div> 
+        <div className="boxLight boxLight_off" style={{ visibility: light === "off" ? "visible" : "hidden", opacity: light === "off" ? "1" : "0", width: lightWidth, height: lightHeight, backgroundImage: 'url("' + appSettings.imageLightOff + '")', left: lightLeft, top: lightTop }} ></div> 
+        <div className="boxLight boxLight_nok" style={{ visibility: light === "nok" ? "visible" : "hidden", opacity: light === "nok" ? "1" : "0", width: lightWidth, height: lightHeight, backgroundImage: 'url("' + appSettings.imageLightNok + '")', left: lightLeft, top: lightTop }} ></div> 
+        <div className="boxLight boxLight_ok" style={{ visibility: light === "ok" ? "visible" : "hidden", opacity: light === "ok" ? "1" : "0", width: lightWidth, height: lightHeight, backgroundImage: 'url("' + appSettings.imageLightOk + '")', left: lightLeft, top: lightTop }} ></div> 
       </div>
     </div>);
 };
