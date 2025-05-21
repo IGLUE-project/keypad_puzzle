@@ -92,7 +92,10 @@ export default function App() {
     if(typeof _appSettings.message !== "string"){
       _appSettings.message = I18n.getTrans("i.message");
     }
-    
+
+    //Change HTTP protocol to HTTPs in URLs if necessary
+    _appSettings = Utils.checkUrlProtocols(_appSettings);
+
     //Preload resources (if necessary)
     Utils.preloadImages([_appSettings.backgroundMessage]);
     //Utils.preloadAudios([_appSettings.soundBeep,_appSettings.soundNok,_appSettings.soundOk]); //Preload done through HTML audio tags
