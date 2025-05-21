@@ -10,6 +10,7 @@ export default defineConfig(async ({ mode }) => {
   } catch(e){}
 
   return {
+    base: './',
     server: {
       open: true,
     },
