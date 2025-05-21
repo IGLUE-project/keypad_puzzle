@@ -33,8 +33,13 @@ const MessageScreen = (props) => {
     setContainerMarginTop(_containerMarginTop);
   }
 
+  let backgroundImage = 'url("' + appSettings.backgroundMessage + '")';
+  if(appSettings.background && appSettings.background !== "NONE"){
+    backgroundImage += ', url("' + appSettings.background + '")';
+  }
+
   return (
-    <div id="screen_message" className="screen_content" style={{ backgroundImage: 'url("' + appSettings.backgroundMessage + '"), url("' + appSettings.background + '")' }}>
+    <div id="screen_message" className="screen_content" style={{ backgroundImage: backgroundImage }}>
       <div id="message_text" style={{ width: containerWidth, height: containerHeight, marginRight: containerMarginRight, marginTop: containerMarginTop }}>
         <pre>{appSettings.message}</pre>
       </div>

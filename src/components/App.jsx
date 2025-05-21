@@ -77,7 +77,7 @@ export default function App() {
         _appSettings.backgroundKeys = _appSettings.coloredBackgroundKeys;
         break;
       case "SYMBOLS":
-        _appSettings.keys = _appSettings.letters;
+        _appSettings.keys = _appSettings.symbols;
         _appSettings.backgroundKeys = new Array(12).fill(_appSettings.backgroundKey);
         break;
       default:

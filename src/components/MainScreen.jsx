@@ -105,7 +105,7 @@ const MainScreen = (props) => {
         setCurrentSolution(currentSolution);
         setProcessingSolution(false);
       } else {
-        const solution = currentSolution.join((appSettings.keysType === "COLORS") ? ";" : "");
+        const solution = currentSolution.join((["COLORS","SYMBOLS"].indexOf(appSettings.keysType) !== -1) ? ";" : "");
         setCurrentSolution([]);
         Utils.log("Check solution", solution);
         escapp.checkNextPuzzle(solution, {}, (success, erState) => {
@@ -148,8 +148,13 @@ const MainScreen = (props) => {
     audio.play();
   }
 
+  let backgroundImage = 'url("' + appSettings.backgroundKeypad + '")';
+  if(appSettings.background && appSettings.background !== "NONE"){
+    backgroundImage += ', url("' + appSettings.background + '")';
+  }
+
   return (
-    <div id="screen_main" className={"screen_content"} style={{ backgroundImage: 'url("' + appSettings.backgroundKeypad + '"), url("' + appSettings.background + '")' }}>
+    <div id="screen_main" className={"screen_content"} style={{ backgroundImage: backgroundImage }}>
       <div id="keypad" style={{ width: containerWidth, height: containerHeight, marginTop: containerMarginTop, marginLeft: containerMarginLeft }}>
         <audio id="audio_beep" src={appSettings.soundBeep} autostart="false" preload="auto" />
         <audio id="audio_failure" src={appSettings.soundNok} autostart="false" preload="auto" />
