@@ -74,7 +74,7 @@ export const DEFAULT_APP_SETTINGS = {
 };
 
 export const SKIN_SETTINGS_RETRO = {
-  background: "images/background.png",
+  background: "images/background_retro.png",
   backgroundKeypad: "images/background_keypad_retro.png",
   backgroundKey: "images/background_key_retro.png",
   coloredBackgroundKeys: [
@@ -104,6 +104,20 @@ export const SKIN_SETTINGS_FUTURISTIC = {
   background: "images/background_futuristic.png",
   backgroundKeypad: "images/background_keypad_futuristic.png",
   backgroundKey: "images/background_key_futuristic.png",
+  coloredBackgroundKeys: [
+    "images/background_key_futuristic_red.png",
+    "images/background_key_futuristic_green.png",
+    "images/background_key_futuristic_blue.png",
+    "images/background_key_futuristic_yellow.png",
+    "images/background_key_futuristic_orange.png",
+    "images/background_key_futuristic_pink.png",
+    "images/background_key_futuristic_cyan.png",
+    "images/background_key_futuristic_purple.png",
+    "images/background_key_futuristic_brown.png",
+    "images/background_key_futuristic_black.png",
+    "images/background_key_futuristic_gray.png",
+    "images/background_key_futuristic_white.png",
+  ],
   backgroundMessage: "images/background_message_futuristic.png",
   imageLightOff: "images/light_off_futuristic.png",
   imageLightNok: "images/light_nok_futuristic.png",

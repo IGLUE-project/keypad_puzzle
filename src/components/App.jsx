@@ -78,6 +78,9 @@ export default function App() {
         break;
       case "SYMBOLS":
         _appSettings.keys = _appSettings.symbols;
+        if((_appSettings.skin === "FUTURISTIC")&&(_appSettings.backgroundKey === "images/background_key_futuristic.png")){
+          _appSettings.backgroundKey = "images/background_key_futuristic_black.png";
+        }
         _appSettings.backgroundKeys = new Array(12).fill(_appSettings.backgroundKey);
         break;
       default:

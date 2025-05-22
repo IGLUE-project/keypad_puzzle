@@ -48,12 +48,12 @@ const MainScreen = (props) => {
 
     switch(appSettings.skin){
       case "RETRO":
-        _containerMarginTop = _keypadHeight * 0.13;
-        _containerMarginLeft = _keypadWidth * 0.045;
+        _containerMarginTop = _keypadHeight * 0.12;
+        _containerMarginLeft = 0;
         _lightWidth = _keypadWidth * 0.08;
         _lightHeight = _keypadHeight * 0.11;
-        _lightLeft = props.appWidth / 2 - _keypadWidth * 0.02;
-        _lightTop = props.appHeight / 2 - _keypadHeight * 0.25;
+        _lightLeft = props.appWidth / 2 - _keypadWidth * 0.041;
+        _lightTop = props.appHeight / 2 - _keypadHeight * 0.265;
         break;
       case "FUTURISTIC":
         _containerMarginTop = 0;
