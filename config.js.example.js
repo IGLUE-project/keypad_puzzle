@@ -14,7 +14,6 @@ export let ESCAPP_APP_SETTINGS = {
 
   escappClientSettings: {
     endpoint:"https://escapp.es/api/escapeRooms/id",
-    imagesPath:"/images/",
     linkedPuzzleIds: [1],
     rtc: false,
   },

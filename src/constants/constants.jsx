@@ -125,6 +125,9 @@ export const SKIN_SETTINGS_FUTURISTIC = {
   soundNok: "sounds/solution_nok_futuristic.wav",
 };
 
-export const ESCAPP_CLIENT_SETTINGS = {};
+export const ESCAPP_CLIENT_SETTINGS = {
+  imagesPath:"./images/",
+};
+
 export const MAIN_SCREEN = "MAIN_SCREEN";
 export const MESSAGE_SCREEN = "MESSAGE_SCREEN";

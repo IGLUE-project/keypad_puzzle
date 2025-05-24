@@ -19,12 +19,12 @@ if (!fs.existsSync(build_folder)) {
   process.exit(1);
 }
 
-fs.ensureDirSync(zip_folder);
-
 //Remove previous ZIP file
-if (fs.existsSync(zip_path)) {
-  fs.removeSync(zip_path);
+if (fs.existsSync(zip_folder)) {
+  fs.removeSync(zip_folder);
 }
+
+fs.ensureDirSync(zip_folder);
 
 try {
   const stdout = execSync("npm run build", { stdio: 'inherit' });
