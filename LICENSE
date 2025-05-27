@@ -1,11 +1,11 @@
-Escapp client is licensed under the GNU General Public License Version 3.
+This software is licensed under the GNU General Public License Version 3.
 
-Escapp client is free software: you can redistribute it and/or modify
+This software is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-Escapp client is distributed in the hope that it will be useful,
+This software is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
@@ -692,14 +692,13 @@ Public License instead of this License.  But first, please read
 
 Third-Party Dependencies
 
-Escapp client uses or has parts based on the following third-party software (each third-party software is licensed under its respective license):
+This software uses or has parts based on the following third-party software (each third-party software is licensed under its respective license):
 
-jQuery v3.7.1 | (c) OpenJS Foundation and other contributors | jquery.org/license | MIT license.
-JavaScript MD5 (https://github.com/blueimp/JavaScript-MD5) | Copyright 2011, Sebastian Tschan | MIT license.
-Notify.js (http://notifyjs.com/) | Copyright (c) 2015 Jaime Pillora | MIT license.
-webpack Boilerplate (https://github.com/taniarascia/webpack-boilerplate) | Copyright (c) 2019 Tania Rascia | MIT license.
-Software included as dependencies in the package.json file: https://github.com/iglue-project/escapp_client/blob/master/package.json.
+Escapp client (https://github.com/iglue-project/escapp_client) | GNU General Public License Version 3 (See escapp.js.LICENSE)
+Font Awesome Free 5.8.1 by @fontawesome (https://fontawesome.com) | Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License.
+Software included as dependencies in the package.json file.
 
+-------------------------------------------------------------------------------------------------
 
 The full text of the MIT License is as follows:
 
@@ -722,3 +721,10 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+-------------------------------------------------------------------------------------------------
+
+Assets
+
+Images and sounds are licensed under the CC0 license (https://creativecommons.org/publicdomain/zero/1.0/).
+Fonts are licensed under the SIL Open Font License, Version 1.1 (see fontawesome.css and MetalMania_License.txt).
