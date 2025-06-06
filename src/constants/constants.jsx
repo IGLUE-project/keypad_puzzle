@@ -1,4 +1,5 @@
 export const DEFAULT_APP_SETTINGS = {
+  solutionLength: 4,
   skin: "STANDARD",
   actionAfterSolve: "NONE",
   message: undefined,
@@ -126,7 +127,9 @@ export const SKIN_SETTINGS_FUTURISTIC = {
 };
 
 export const ESCAPP_CLIENT_SETTINGS = {
+  endpoint:"https://escapp.es/api/escapeRooms/28",
   imagesPath:"./images/",
+  linkedPuzzleIds: [1],
 };
 
 export const MAIN_SCREEN = "MAIN_SCREEN";
