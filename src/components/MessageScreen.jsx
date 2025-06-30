@@ -37,8 +37,8 @@ const MessageScreen = (props) => {
       case "FUTURISTIC":
       default:
         //Standard skin
-        _containerWidth = _keypadWidth * 0.49;
-        _containerHeight = _keypadHeight * 0.5;
+        _containerWidth = _keypadWidth * 0.4;
+        _containerHeight = _keypadHeight * 0.35;
         _containerMarginRight = _keypadWidth * 0.018;
         _containerMarginTop = _keypadHeight * 0.03;
     }

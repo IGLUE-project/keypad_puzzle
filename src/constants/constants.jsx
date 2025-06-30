@@ -75,7 +75,7 @@ export const DEFAULT_APP_SETTINGS = {
 
 export const SKIN_SETTINGS_RETRO = {
   background: "images/background_retro.png",
-  backgroundKeypad: "images/background_keypad_retro.png",
+  backgroundKeypad: "../images/background_keypad_retro.png",
   backgroundKey: "images/background_key_retro.png",
   coloredBackgroundKeys: [
     "images/background_key_retro_red.png",
