@@ -148,7 +148,7 @@ const MainScreen = (props) => {
     audio.play();
   }
 
-  let backgroundImage = 'url("' + appSettings.backgroundKeypad + '")';
+  let backgroundImage =  'url("' + appSettings.backgroundKeypad + '")';
   if(appSettings.background && appSettings.background !== "NONE"){
     backgroundImage += ', url("' + appSettings.background + '")';
   }
