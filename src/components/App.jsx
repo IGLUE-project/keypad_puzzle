@@ -45,6 +45,9 @@ export default function App() {
     if(typeof _appSettings !== "object"){
       _appSettings = {};
     }
+    if((typeof _appSettings.skin === "undefined")&&(typeof DEFAULT_APP_SETTINGS.skin === "string")){
+      _appSettings.skin = DEFAULT_APP_SETTINGS.skin;
+    }
 
     let skinSettings;
     switch(_appSettings.skin){
