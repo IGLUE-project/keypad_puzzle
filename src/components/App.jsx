@@ -3,7 +3,7 @@ import {useState, useEffect, useRef, useContext } from 'react';
 import { GlobalContext } from "./GlobalContext";
 import './../assets/scss/app.scss';
 
-import { DEFAULT_APP_SETTINGS, SKIN_SETTINGS_RETRO, SKIN_SETTINGS_FUTURISTIC, ESCAPP_CLIENT_SETTINGS, MAIN_SCREEN, MESSAGE_SCREEN } from '../constants/constants.jsx';
+import { DEFAULT_APP_SETTINGS, SKIN_SETTINGS_RETRO, SKIN_SETTINGS_RETRO_JUNGLE, SKIN_SETTINGS_RETRO_REALISTIC, SKIN_SETTINGS_FUTURISTIC, ESCAPP_CLIENT_SETTINGS, MAIN_SCREEN, MESSAGE_SCREEN } from '../constants/constants.jsx';
 import MainScreen from './MainScreen.jsx';
 import MessageScreen from './MessageScreen.jsx';
 
@@ -50,6 +50,12 @@ export default function App() {
     switch(_appSettings.skin){
       case "RETRO":
         skinSettings = SKIN_SETTINGS_RETRO;
+        break;
+      case "RETRO_JUNGLE":
+        skinSettings = SKIN_SETTINGS_RETRO_JUNGLE;
+        break;
+      case "RETRO_REALISTIC":
+        skinSettings = SKIN_SETTINGS_RETRO_REALISTIC;
         break;
       case "FUTURISTIC":
         skinSettings = SKIN_SETTINGS_FUTURISTIC;
