@@ -15,7 +15,7 @@ div#message_text {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
-	font-size: 4vmin;
+	font-size: 3.8vmin;
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	-khtml-user-select: none; 
@@ -29,7 +29,8 @@ div#message_text pre {
 }
 
 div.message_button {
-	font-size: 4vmin;
+	font-size: 3.5vmin;
+	margin-bottom: 1.5rem;
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	-khtml-user-select: none; 
@@ -37,8 +38,13 @@ div.message_button {
 	-ms-user-select: none; 
 	user-select: none;
 	cursor: pointer;
-	background:#000;
-	border:2px solid #fff;
-	border-radius: 15px 15px 15px 15px;
-	padding: 2vmin;
+	background:#0000007a;
+	color: #d4d4d4;
+	border:1px solid #ffffff71;
+	border-radius: 8px;
+	padding: 1.6vmin 3vmin 2vmin;
+	&:hover {
+		background: #000;
+		transition: ease-in-out 200ms
+	}
 }

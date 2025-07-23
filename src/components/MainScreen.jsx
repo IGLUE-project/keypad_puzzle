@@ -48,6 +48,8 @@ const MainScreen = (props) => {
 
     switch(appSettings.skin){
       case "RETRO":
+      case "RETRO_JUNGLE":
+      case "RETRO_REALISTIC":
         _containerMarginTop = _keypadHeight * 0.12;
         _containerMarginLeft = 0;
         _lightWidth = _keypadWidth * 0.08;
@@ -58,7 +60,7 @@ const MainScreen = (props) => {
       case "FUTURISTIC":
         _containerMarginTop = 0;
         _containerMarginLeft = _keypadWidth * -0.065;
-         _lightWidth = _keypadWidth * 0.045;
+        _lightWidth = _keypadWidth * 0.045;
         _lightHeight = _keypadHeight * 0.48;
         _lightLeft = props.appWidth / 2 + _keypadWidth / 2 * 0.27;
         _lightTop = props.appHeight / 2 - _keypadHeight / 2 * 0.48;
@@ -105,7 +107,7 @@ const MainScreen = (props) => {
         setCurrentSolution(currentSolution);
         setProcessingSolution(false);
       } else {
-        const solution = currentSolution.join((["COLORS","SYMBOLS"].indexOf(appSettings.keysType) !== -1) ? ";" : "");
+        const solution = currentSolution.join(";");
         setCurrentSolution([]);
         Utils.log("Check solution", solution);
         escapp.checkNextPuzzle(solution, {}, (success, erState) => {
@@ -125,18 +127,19 @@ const MainScreen = (props) => {
   const changeBoxLight = (success, solution) => {
     let audio;
     let afterChangeBoxLightDelay = 1000;
+    let isRetro = appSettings.skin.includes("RETRO");
 
     if (success) {
       audio = document.getElementById("audio_success");
       setLight("ok");
-      afterChangeBoxLightDelay = (appSettings.skin === "RETRO" ? 4500 : 1500);
+      afterChangeBoxLightDelay = ((isRetro===true) ? 4500 : 1500);
     } else {
       audio = document.getElementById("audio_failure");
       setLight("nok");
     }
 
     setTimeout(() => {
-      if((success===false)||(appSettings.skin != "RETRO")){
+      if((success===false)||(isRetro === false)){
         setLight("off");
         setProcessingSolution(false);
       }
@@ -152,6 +155,8 @@ const MainScreen = (props) => {
   if(appSettings.background && appSettings.background !== "NONE"){
     backgroundImage += ', url("' + appSettings.background + '")';
   }
+
+  let boxLightTransitionClass = (light === "ok" && appSettings.skin.includes("RETRO")) ? "slowTransition" : "";
 
   return (
     <div id="screen_main" className={"screen_content"} style={{ backgroundImage: backgroundImage }}>
@@ -179,11 +184,14 @@ const MainScreen = (props) => {
           <BoxButton value={appSettings.keys[10]} position={11} onClick={onClickButton} boxHeight={boxHeight} boxWidth={boxWidth} />
           <BoxButton value={appSettings.keys[11]} position={12} onClick={onClickButton} boxHeight={boxHeight} boxWidth={boxWidth} />
         </div>
-        <div className="boxLight boxLight_off" style={{ visibility: light === "off" ? "visible" : "hidden", opacity: light === "off" ? "1" : "0", width: lightWidth, height: lightHeight, backgroundImage: 'url("' + appSettings.imageLightOff + '")', left: lightLeft, top: lightTop }} ></div> 
-        <div className="boxLight boxLight_nok" style={{ visibility: light === "nok" ? "visible" : "hidden", opacity: light === "nok" ? "1" : "0", width: lightWidth, height: lightHeight, backgroundImage: 'url("' + appSettings.imageLightNok + '")', left: lightLeft, top: lightTop }} ></div> 
-        <div className="boxLight boxLight_ok" style={{ visibility: light === "ok" ? "visible" : "hidden", opacity: light === "ok" ? "1" : "0", width: lightWidth, height: lightHeight, backgroundImage: 'url("' + appSettings.imageLightOk + '")', left: lightLeft, top: lightTop }} ></div> 
+        <div className={`boxLight boxLight_off ${boxLightTransitionClass}`} style={{ visibility: light === "off" ? "visible" : "hidden", opacity: light === "off" ? "1" : "0", width: lightWidth, height: lightHeight, backgroundImage: 'url("' + appSettings.imageLightOff + '")', left: lightLeft, top: lightTop }} ></div> 
+        <div className={`boxLight boxLight_nok ${boxLightTransitionClass}`} style={{ visibility: light === "nok" ? "visible" : "hidden", opacity: light === "nok" ? "1" : "0", width: lightWidth, height: lightHeight, backgroundImage: 'url("' + appSettings.imageLightNok + '")', left: lightLeft, top: lightTop }} ></div> 
+        <div className={`boxLight boxLight_ok ${boxLightTransitionClass}`} style={{ visibility: light === "ok" ? "visible" : "hidden", opacity: light === "ok" ? "1" : "0", width: lightWidth, height: lightHeight, backgroundImage: 'url("' + appSettings.imageLightOk + '")', left: lightLeft, top: lightTop }} ></div> 
       </div>
     </div>);
 };
 
 export default MainScreen;
+
+
+
