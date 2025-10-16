@@ -181,7 +181,6 @@ export const SKIN_SETTINGS_FUTURISTIC = {
 };
 
 export const ESCAPP_CLIENT_SETTINGS = {
-  endpoint:"https://escapp.es/api/escapeRooms/28",
   imagesPath:"./images/",
   linkedPuzzleIds: [1],
 };
