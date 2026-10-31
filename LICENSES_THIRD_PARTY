@@ -4,7 +4,7 @@ This software uses or has parts based on the following third-party software (eac
 
 Escapp client (https://github.com/iglue-project/escapp_client) | GNU General Public License Version 3 (See escapp.js.LICENSE)
 Font Awesome Free 5.8.1 by @fontawesome (https://fontawesome.com) | Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License.
-Software included as dependencies in the package.json file.
+Software included as dependencies in the package.json file. See Additional Third-Party Dependencies.
 
 -------------------------------------------------------------------------------------------------
 
